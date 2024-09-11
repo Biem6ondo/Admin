@@ -147,9 +147,7 @@ local commands = {
                 end
             end
         elseif targetName == "friend" then
-            -- Xử lý lệnh cho bạn bè ở đây
         elseif targetName == "team" then
-            -- Xử lý lệnh cho đội ở đây
         elseif targetName == "me" or targetName == "" then
             targetPlayer = LocalPlayer
         else
@@ -183,9 +181,7 @@ local commands = {
                 end
             end
         elseif targetName == "friend" then
-            -- Xử lý lệnh cho bạn bè ở đây
         elseif targetName == "team" then
-            -- Xử lý lệnh cho đội ở đây
         elseif targetName == "me" or targetName == "" then
             targetPlayer = LocalPlayer
         else
@@ -224,7 +220,6 @@ end,
     end
 end,
 
--- Thay đổi góc nhìn (FOV)
 ["fov"] = function(value)
     local camera = workspace.CurrentCamera
     local newFov = tonumber(value)
@@ -232,40 +227,29 @@ end,
     if newFov and newFov >= 1 and newFov <= 120 then
         camera.FieldOfView = newFov
     else
-        print("Giá trị FOV không hợp lệ. Vui lòng nhập giá trị từ 1 đến 120.")
+        print("invalid Fov value!. Invalid value, must be from 1 to 120.")
     end
 end,
 
--- Lệnh reset: Đặt lại nhân vật của người chơi
 ["reset"] = function()
     local player = Players.LocalPlayer
     if player and player.Character then
-        player.Character:BreakJoints()  -- Thực hiện đặt lại nhân vật
+        player.Character:BreakJoints()
     end
 end,
 
--- Lệnh exit: Thoát trò chơi
 ["exit"] = function()
-    game:Shutdown()  -- Lệnh này sẽ tắt trò chơi
+    game:Shutdown()
 end,
 
--- Lệnh day: Đặt thời gian trong game thành ban ngày
 ["day"] = function()
     local lighting = game:GetService("Lighting")
-    lighting.TimeOfDay = "14:00:00"  -- Đặt thời gian thành giữa trưa
+    lighting.TimeOfDay = "14:00:00"  
 end,
 
--- Lệnh night: Đặt thời gian trong game thành ban đêm
 ["night"] = function()
     local lighting = game:GetService("Lighting")
     lighting.TimeOfDay = "00:00:00"  -- Đặt thời gian thành giữa đêm
-end,
-
-["lay"] = function()
-    local player = game.Players.LocalPlayer
-    if player and player.Character and player.Character:FindFirstChild("Humanoid") then
-        player.Character.Humanoid.Sit = true
-    end
 end,
 
 ["sit"] = function()
@@ -277,41 +261,6 @@ end,
 
 ["say"] = function(message)
     game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(message, "All")
-end,
-
-["spam"] = function(message, speed)
-    speed = speed or 1 -- Mặc định tốc độ spam là 1 giây
-    local player = game.Players.LocalPlayer
-    if player and player.Character then
-        while true do
-            game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(message, "All")
-            wait(speed)
-        end
-    end
-end,
-
-["unspam"] = function()
-    -- Để ngừng lệnh spam, cần phải dừng vòng lặp ở hàm spam. Bạn có thể cần một biến toàn cục để kiểm soát vòng lặp này.
-    -- Tạm thời để trống nếu không có cơ chế dừng vòng lặp spam.
-end,
-
-["spin"] = function(speed)
-    speed = speed or 10 -- Mặc định tốc độ spin là 10
-    local player = game.Players.LocalPlayer
-    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        local hrp = player.Character.HumanoidRootPart
-        local startTime = tick()
-        game:GetService("RunService").RenderStepped:Connect(function()
-            if player.Character then
-                hrp.CFrame = hrp.CFrame * CFrame.Angles(0, speed * (tick() - startTime), 0)
-            end
-        end)
-    end
-end,
-
-["unspin"] = function()
-    -- Để ngừng lệnh spin, cần phải dừng việc cập nhật CFrame trong hàm spin. Bạn có thể cần một biến toàn cục để kiểm soát vòng lặp này.
-    -- Tạm thời để trống nếu không có cơ chế dừng vòng lặp spin.
 end,
 
 ["hideguis"] = function()
@@ -352,7 +301,6 @@ end,
     local devTool = Instance.new("Tool")
     devTool.Name = "DevTool"
     devTool.Parent = player.Backpack
-    -- Add further customization for the DevTool here
 end,
 
 ["noarms"] = function()
@@ -430,13 +378,6 @@ end,
     end
 end,
 
-["disconnect"] = function()
-    local player = game.Players.LocalPlayer
-    if player then
-        player:Kick("Disconnected")
-    end
-end,
-
 ["voidreset"] = function()
     local player = game.Players.LocalPlayer
     local character = player.Character
@@ -460,18 +401,6 @@ end,
     end
 end,
 
-["autojump"] = function()
-    _G.autoJumping = true
-    while _G.autoJumping do
-        game.Players.LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-        wait(0.1)
-    end
-end,
-
-["unautojump"] = function()
-    _G.autoJumping = false
-end,
-
 ["godmode"] = function()
     local character = game.Players.LocalPlayer.Character
     if character then
@@ -491,54 +420,37 @@ end,
 end,
 
 ["antilag"] = function()
-    -- Giảm đồ họa
     local settings = game:GetService("Lighting")
     settings.GlobalShadows = false
     settings.FogEnd = 9e9
     settings.Brightness = 0
 
-    -- Vô hiệu hóa các hiệu ứng không cần thiết
     for _, effect in pairs(settings:GetChildren()) do
         if effect:IsA("PostEffect") then
             effect.Enabled = false
         end
     end
 
-    -- Giảm số lượng chi tiết vật thể
     for _, object in pairs(workspace:GetDescendants()) do
         if object:IsA("Part") or object:IsA("MeshPart") or object:IsA("UnionOperation") then
             object.Material = Enum.Material.SmoothPlastic
             object.Reflectance = 0
         end
     end
-    
-    -- Vô hiệu hóa các scripts không cần thiết
+
     for _, v in pairs(workspace:GetDescendants()) do
         if v:IsA("Script") or v:IsA("LocalScript") then
             v.Disabled = true
         end
     end
 
-    -- Giảm render distance
     local player = game.Players.LocalPlayer
     if player and player:FindFirstChild("PlayerScripts") then
         local playerScripts = player:FindFirstChild("PlayerScripts")
         playerScripts.CameraMaxZoomDistance = 50 -- Điều chỉnh khoảng cách render
     end
 
-    print("Đã bật chế độ giảm lag.")
-end,
-
-["age"] = function(targetName)
-    -- Hiển thị tuổi người chơi
-    local targetPlayer = findPlayer(targetName)
-    if targetPlayer then
-        print("Tuổi của người chơi " .. targetPlayer.Name .. " là: " .. targetPlayer.AccountAge .. " ngày.")
-    end
-end,
-
-["devmode"] = function()
-    print("No Data")
+    print("Lag reduction mode is not good, you can ask me questions through the forum!.")
 end,
 
 ["nohead"] = function()
@@ -560,13 +472,6 @@ end,
     end
 end,
 
-["respawn"] = function()
-    local player = Players.LocalPlayer
-    if player and player.Character then
-        player.Character:BreakJoints()  -- Thực hiện hồi sinh nhân vật
-    end
-end,
-
 ["health"] = function(value)
     local player = Players.LocalPlayer
     if player and player.Character then
@@ -579,12 +484,12 @@ end,
 
 ["fog"] = function(value)
     local lighting = game:GetService("Lighting")
-    local newFogEnd = tonumber(value) or 1000 -- Giá trị mặc định nếu không nhập giá trị
+    local newFogEnd = tonumber(value) or 1000
     lighting.FogEnd = newFogEnd
 end,
 
 ["autoheal"] = function(healRate)
-    healRate = tonumber(healRate) or 10  -- Mặc định giá trị hồi máu là 10
+    healRate = tonumber(healRate) or 10
     local player = game.Players.LocalPlayer
     if player and player.Character then
         local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
@@ -593,13 +498,12 @@ end,
                 if humanoid.Health < humanoid.MaxHealth then
                     humanoid.Health = math.min(humanoid.Health + healRate, humanoid.MaxHealth)
                 end
-                wait(0.0001)  -- Cập nhật hồi máu mỗi giây
+                wait(0.0001)
             end
         end
     end
 end,
 
--- Lệnh Freecam
 ["freecam"] = function()
     local player = game.Players.LocalPlayer
     local character = player.Character
