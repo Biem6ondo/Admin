@@ -3390,6 +3390,9 @@ while SG.Parent do
     wait(0)
 end
 end,
+
+["checkupdate"] = function()
+end,
 }
 
 -- Hàm xử lý lệnh
