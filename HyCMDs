@@ -1,33 +1,29 @@
--- Kiểm tra xem Gui với tên "HyCMDs" đã tồn tại trong PlayerGui chưa
 local function checkGuiExists()
     local player = game.Players.LocalPlayer
     local playerGui = player:WaitForChild("PlayerGui")
     return playerGui:FindFirstChild("HyCMDs") ~= nil
 end
 
--- Tạo thông báo đầu tiên
 local function showInitialNotification()
     local starterGui = game:GetService("StarterGui")
 
     starterGui:SetCore("SendNotification", {
         Title = "Script Executed";
         Text = "The script has been executed successfully.";
-        Duration = 5; -- Thời gian hiển thị thông báo (giây)
+        Duration = 5; 
     })
 end
 
--- Tạo thông báo khi Gui đã tồn tại
 local function showAlreadyExecutedNotification()
     local starterGui = game:GetService("StarterGui")
 
     starterGui:SetCore("SendNotification", {
         Title = "Script is Already Executed!";
         Text = "Please re-join and execute again or Type command: DeleteHyCMDs and execute again!.";
-        Duration = 5; -- Thời gian hiển thị thông báo (giây)
+        Duration = 5; 
     })
 end
 
--- Kiểm tra và hiển thị thông báo
 local function checkAndNotify()
     if not checkGuiExists() then
         showInitialNotification()
@@ -36,7 +32,6 @@ local function checkAndNotify()
     end
 end
 
--- Gọi function để kiểm tra và hiển thị thông báo
 checkAndNotify()
 
 local function showInviteNotification()
@@ -45,18 +40,15 @@ local function showInviteNotification()
     starterGui:SetCore("SendNotification", {
         Title = "It's being fixed now!";
         Text = "This script is not organized and may cause lag or errors! You can enter the help command to join!";
-        Duration = 5; -- Thời gian hiển thị thông báo (giây)
+        Duration = 5; 
         Button1 = "Ok";
         Callback = function(result)
             if result == Enum.NotificationButtonState[1] then
-                -- Khi nhấp vào nút Ok
-                -- Không cần thêm mã ở đây
             end
         end
     })
 end
 
--- Gọi function để hiển thị thông báo
 showInviteNotification()
 
 --Cmd!
@@ -69,11 +61,9 @@ local executeButton = Instance.new("TextButton")
 local loadingLabel = Instance.new("TextLabel")
 local progressBar = Instance.new("Frame")
 
--- Cài đặt ScreenGui
 screenGui.Name = "HyCMDs"
 screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 
--- Cài đặt TextBox
 textBox.Parent = screenGui
 textBox.Position = UDim2.new(0, 10, 0, 50)
 textBox.Size = UDim2.new(0, 200, 0, 50)
@@ -84,7 +74,6 @@ textBox.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
 textBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 textBox.BorderSizePixel = 0
 
--- Cài đặt Nút Execute
 executeButton.Parent = screenGui
 executeButton.Position = UDim2.new(0, 220, 0, 50)
 executeButton.Size = UDim2.new(0, 100, 0, 50)
@@ -92,7 +81,6 @@ executeButton.Text = "Execute"
 executeButton.BackgroundColor3 = Color3.fromRGB(73, 73, 73)
 executeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 
--- Cài đặt Thanh tải
 progressBar.Parent = screenGui
 progressBar.Position = UDim2.new(0, 10, 1, -60)
 progressBar.Size = UDim2.new(0, 200, 0, 10)
@@ -111,7 +99,6 @@ loadingLabel.Size = UDim2.new(0, 200, 0, 20)
 loadingLabel.Text = "Loading..."
 loadingLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
 
--- Hiệu ứng animation cho TextBox
 local function animateTextBox()
     local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut, -1, true)
     local goal = { BackgroundColor3 = Color3.fromRGB(200, 200, 200) }
@@ -119,15 +106,12 @@ local function animateTextBox()
     tween:Play()
 end
 
--- Hàm split cho chuỗi
 local function split(str, sep)
     local fields = {}
     local pattern = string.format("([^%s]+)", sep)
     str:gsub(pattern, function(c) fields[#fields + 1] = c end)
     return fields
 end
-
--- Hàm tìm người chơi gần đúng
 local function findPlayer(name)
     local bestMatch = nil
     local shortestDistance = math.huge
@@ -141,7 +125,6 @@ local function findPlayer(name)
     return bestMatch
 end
 
--- Danh sách lệnh và script tương ứng
 local commands = {
     ["hello"] = function()
         print("hello")
