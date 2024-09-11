@@ -249,7 +249,7 @@ end,
 
 ["night"] = function()
     local lighting = game:GetService("Lighting")
-    lighting.TimeOfDay = "00:00:00"  -- Đặt thời gian thành giữa đêm
+    lighting.TimeOfDay = "00:00:00"  
 end,
 
 ["sit"] = function()
@@ -383,10 +383,8 @@ end,
     local character = player.Character
 
     if character then
-        -- Set character's position to the void (far below the map)
-        character:SetPrimaryPartCFrame(CFrame.new(0, -5000, 0))
+        character:SetPrimaryPartCFrame(CFrame.new(0, -200, 0))
         wait(0.1)
-        -- Reset character's health to 0
         local humanoid = character:FindFirstChildOfClass("Humanoid")
         if humanoid then
             humanoid.Health = 0
@@ -528,7 +526,6 @@ end,
     end
 end,
 
--- Lệnh Unfreecam
 ["unfreecam"] = function()
     local player = game.Players.LocalPlayer
     local camera = workspace.CurrentCamera
@@ -540,7 +537,6 @@ end,
     end
 end,
 
--- Lệnh NoAnimation
 ["noanimation"] = function()
     local character = game.Players.LocalPlayer.Character
     if character then
@@ -550,7 +546,6 @@ end,
     end
 end,
 
--- Lệnh healspeed
 ["healspeed"] = function(value)
     local humanoid = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
     if humanoid then
@@ -558,16 +553,14 @@ end,
     end
 end,
 
--- Lệnh MaxHealth
 ["maxhealth"] = function(value)
     local humanoid = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
     if humanoid then
         humanoid.MaxHealth = value
-        humanoid.Health = math.min(humanoid.Health, value) -- Đảm bảo máu hiện tại không vượt quá mức tối đa
+        humanoid.Health = math.min(humanoid.Health, value)
     end
 end,
 
--- Lệnh AutoHealthLoss
 ["autohealthloss"] = function(value)
     local player = game.Players.LocalPlayer
     local character = player.Character
@@ -581,7 +574,6 @@ end,
     end
 end,
 
--- Lệnh ATL (AutoHealthLoss)
 ["atl"] = function(value)
     local player = game.Players.LocalPlayer
     local character = player.Character
@@ -596,12 +588,10 @@ end,
 end,
 
 ["info"] = function()
-    -- Create the ScreenGui
     local screenGui = Instance.new("ScreenGui")
     screenGui.Name = "InfoGUI"
     screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
-    -- Create the main Frame for the GUI
     local mainFrame = Instance.new("Frame")
     mainFrame.Size = UDim2.new(0.5, 0, 0.5, 0)
     mainFrame.Position = UDim2.new(0.25, 0, 0.25, 0)
@@ -609,7 +599,6 @@ end,
     mainFrame.BorderSizePixel = 0
     mainFrame.Parent = screenGui
 
-    -- Create the Scroll Frame for the text
     local scrollFrame = Instance.new("ScrollingFrame")
     scrollFrame.Size = UDim2.new(1, 0, 1, -50)
     scrollFrame.Position = UDim2.new(0, 0, 0, 0)
@@ -617,13 +606,12 @@ end,
     scrollFrame.BackgroundTransparency = 1
     scrollFrame.Parent = mainFrame
 
-    -- Create the TextLabel for the information
     local infoLabel = Instance.new("TextLabel")
     infoLabel.Size = UDim2.new(1, -10, 0, 10000)
     infoLabel.Position = UDim2.new(0, 5, 0, 5)
     infoLabel.Text = [[
                                                     info:
-Version: B_0.1
+Version: Beta: 1
 Name Script: HyCMDs
 Creators: ACE1991ACE
 THANK FOR USE MY SCRIPT ^^
@@ -635,7 +623,6 @@ THANK FOR USE MY SCRIPT ^^
     infoLabel.Parent = scrollFrame
     infoLabel.TextSize = 10
 
-    -- Create the Close button
     local closeButton = Instance.new("TextButton")
     closeButton.Size = UDim2.new(0, 100, 0, 50)
     closeButton.Position = UDim2.new(1, -110, 1, -60)
@@ -649,7 +636,6 @@ THANK FOR USE MY SCRIPT ^^
     end)
 end,
 
--- Lệnh Invisible
 ["invisible"] = function()
     local character = game.Players.LocalPlayer.Character
     if character then
@@ -662,7 +648,6 @@ end,
     end
 end,
 
--- Lệnh DeleteHyCMDs
 ["deletehycmds"] = function()
     local playerGui = game.Players.LocalPlayer:FindFirstChildOfClass("PlayerGui")
     if playerGui then
@@ -674,115 +659,14 @@ end,
     end
 end,
 
--- Lệnh Btools
 ["btools"] = function()
     local success, result = pcall(function()
         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-BTools-12430"))()
     end)
     
     if not success then
-        warn("Không thể thực thi lệnh Btools: " .. result)
+        warn("Download failed!: " .. result)
     end
-end,
-
--- Lệnh FogColor
-["fogcolor"] = function(option)
-    local colors = {
-        [1] = Color3.fromRGB(255, 0, 0),    -- Red
-        [2] = Color3.fromRGB(0, 0, 255),    -- Blue
-        [3] = Color3.fromRGB(0, 255, 0),    -- Green
-        [4] = Color3.fromRGB(0, 0, 0),      -- Black
-        [5] = Color3.fromRGB(255, 255, 0),  -- Yellow
-        [6] = Color3.fromRGB(128, 0, 128),  -- Purple
-        [7] = Color3.fromRGB(0, 255, 255),  -- Cyan
-        [8] = Color3.fromRGB(255, 255, 255),-- White
-        [9] = Color3.fromRGB(139, 69, 19)   -- Sh*t color (Brown)
-    }
-    
-    local index = tonumber(option)
-    local color = colors[index]
-
-    if color then
-        game:GetService("Lighting").FogColor = color
-    else
-        warn("Invalid option. Please choose a number from 1 to 9.")
-    end
-end,
-
--- Lệnh Unshader
-["unshader"] = function()
-    local lighting = game:GetService("Lighting")
-
-    -- Gỡ bỏ các hiệu ứng đồ họa đã áp dụng
-    local bloom = lighting:FindFirstChild("CustomBloom")
-    if bloom then bloom:Destroy() end
-
-    local colorCorrection = lighting:FindFirstChild("CustomColorCorrection")
-    if colorCorrection then colorCorrection:Destroy() end
-
-    local blur = lighting:FindFirstChild("CustomBlur")
-    if blur then blur:Destroy() end
-end,
-
--- Lệnh Shader
-["shader"] = function()
-    local lighting = game:GetService("Lighting")
-
-    -- Thêm các hiệu ứng đồ họa để tạo shader
-    local bloom = Instance.new("BloomEffect")
-    bloom.Name = "CustomBloom"
-    bloom.Intensity = 1
-    bloom.Size = 24
-    bloom.Threshold = 0.8
-    bloom.Parent = lighting
-
-    local colorCorrection = Instance.new("ColorCorrectionEffect")
-    colorCorrection.Name = "CustomColorCorrection"
-    colorCorrection.Brightness = 0.1
-    colorCorrection.Contrast = 0.2
-    colorCorrection.Saturation = 0.3
-    colorCorrection.TintColor = Color3.fromRGB(255, 255, 255)
-    colorCorrection.Parent = lighting
-
-    local blur = Instance.new("BlurEffect")
-    blur.Name = "CustomBlur"
-    blur.Size = 10
-    blur.Parent = lighting
-end,
-
--- Lệnh follow
-["follow"] = function(targetName)
-    local player = game.Players.LocalPlayer
-    local character = player.Character
-    local target
-
-    -- Tìm đối tượng với tên gần đúng
-    for _, otherPlayer in ipairs(game.Players:GetPlayers()) do
-        if otherPlayer.Name:lower():match(targetName:lower()) or otherPlayer.DisplayName:lower():match(targetName:lower()) then
-            target = otherPlayer
-            break
-        end
-    end
-
-    if target and target.Character then
-        -- Tạo một kết nối để theo dõi vị trí của đối tượng
-        player.Following = game:GetService("RunService").Heartbeat:Connect(function()
-            character.Humanoid:MoveTo(target.Character.HumanoidRootPart.Position)
-        end)
-    else
-        warn("Không tìm thấy đối tượng hoặc đối tượng không có nhân vật.")
-    end
-end,
-
-["fakedata"] = function(value)
-    local dataStores = game:GetService("DataStoreService"):GetDataStores()
-    
-    for _, dataStore in pairs(dataStores) do
-        for key, _ in pairs(dataStore:GetAsync("AllKeys")) do
-            dataStore:SetAsync(key, value)
-        end
-    end
-    print("Tất cả dữ liệu đã được thiết lập thành giá trị: " .. tostring(value))
 end,
 
 ["time"] = function(timeString)
@@ -791,7 +675,7 @@ end,
         game.Lighting.TimeOfDay = string.format("%02d:%02d:%02d", hours, minutes, seconds)
         print("Thời gian trong game đã được đặt thành: " .. game.Lighting.TimeOfDay)
     else
-        warn("Định dạng thời gian không hợp lệ. Vui lòng sử dụng định dạng HH:MM:SS.")
+        warn("00:00:00 is true!")
     end
 end,
 
@@ -800,26 +684,22 @@ end,
     local character = player.Character
 
     if not character then
-        warn("Không tìm thấy nhân vật của bạn.")
+        warn("...")
         return
     end
 
     local targetSize = tonumber(size)
 
     if not targetSize then
-        warn("Giá trị kích thước không hợp lệ. Vui lòng nhập một số hợp lệ.")
+        warn("Please enter right value!.")
         return
     end
 
-    -- Tìm mũ trong nhân vật
     local hat = character:FindFirstChildOfClass("Accessory")
     if hat then
         local handle = hat:FindFirstChild("Handle")
         if handle then
-            -- Cập nhật kích thước mũ
             handle.Size = Vector3.new(targetSize, targetSize, targetSize)
-
-            -- Cố định mũ ngay tại cổ
             local head = character:FindFirstChild("Head")
             if head then
                 -- Cập nhật CFrame của mũ để giữ nó ngay tại cổ
@@ -827,10 +707,10 @@ end,
             end
         end
     else
-        warn("Không tìm thấy mũ trên đầu của bạn.")
+        warn("I cant find hat.")
     end
 
-    print("Kích thước mũ của bạn đã được thay đổi thành: " .. tostring(targetSize))
+    print("Size: " .. tostring(targetSize))
 end,
 
 ["headsize"] = function(size)
@@ -838,18 +718,17 @@ end,
     local character = player.Character
     
     if not character then
-        warn("Không tìm thấy nhân vật của bạn.")
+        warn("...")
         return
     end
     
     local targetSize = tonumber(size)
     
     if not targetSize then
-        warn("Giá trị kích thước không hợp lệ. Vui lòng nhập một số hợp lệ.")
+        warn("Please enter right value.")
         return
     end
-    
-    -- Thay đổi kích thước đầu
+
     local head = character:FindFirstChild("Head")
     if head then
         head.Size = Vector3.new(targetSize, targetSize, targetSize)
