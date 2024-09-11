@@ -2927,18 +2927,16 @@ local function addFireEffect(part)
     fire.Parent = part
 end
 
--- Đổi màu nhân vật thành đen và thêm hiệu ứng cháy
 local function turnCharacterBlack()
     for _, part in pairs(character:GetDescendants()) do
         if part:IsA("BasePart") then
-            part.BrickColor = BrickColor.new("Black") -- Chuyển màu cơ thể thành đen
-            part.Material = Enum.Material.SmoothPlastic -- Thay đổi vật liệu nếu cần
-            addFireEffect(part) -- Thêm hiệu ứng cháy
+            part.BrickColor = BrickColor.new("Black")
+            part.Material = Enum.Material.SmoothPlastic
+            addFireEffect(part)
         end
     end
 end
 
--- Khi người chơi chạm vào vòng tay, phát ra âm thanh, tạo vụ nổ và hiển thị văn bản
 magicBracelet.Touched:Connect(function(hit)
     local humanoid = hit.Parent:FindFirstChild("Humanoid")
     if humanoid then
@@ -2949,16 +2947,12 @@ magicBracelet.Touched:Connect(function(hit)
         explosion.BlastPressure = 1000
         explosion.Parent = workspace
         
-        -- Hiển thị chữ "😂👊" trên màn hình
         createScreenMessage("😂👊")
 
-        -- Tạo hiệu ứng màn hình đỏ khi nhân vật chết
         humanoid.Died:Connect(function()
             createRedScreenEffect()
             turnCharacterBlack()
         end)
-
-        -- Đặt nhân vật nằm xuống và không rơi từng mảnh
         humanoid.Health = 0
         humanoid:ChangeState(Enum.HumanoidStateType.Physics)
         character.HumanoidRootPart.Anchored = true
@@ -3169,14 +3163,13 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/Biem6ondo/Admin/main/
 end,
 }
 
--- Hàm xử lý lệnh
+-- End Command!
 local function processCommand(commandText)
     local parts = split(commandText:lower():match("^%s*(.-)%s*$"), " ")
     local command = parts[1]
-    local targetName = table.concat(parts, " ", 2) -- Lấy phần còn lại làm tên mục tiêu
+    local targetName = table.concat(parts, " ", 2)
 
     if command ~= "" and commands[command] then
-        -- Hiển thị thanh tải từ 0-100%
         local tweenInfo = TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In)
         local goal = { Size = UDim2.new(1, 0, 1, 0) }
         local tween = TweenService:Create(loadingBar, tweenInfo, goal)
@@ -3186,7 +3179,6 @@ local function processCommand(commandText)
             loadingLabel.Text = ""
             commands[command](targetName)
             textBox.Text = ""
-            -- Reset thanh tải
             loadingBar.Size = UDim2.new(0, 0, 1, 0)
         end)
     else
