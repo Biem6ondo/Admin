@@ -3392,6 +3392,14 @@ end
 end,
 
 ["checkupdate"] = function()
+local player = game.Players.LocalPlayer
+local hyCmds = player:WaitForChild("PlayerGui"):FindFirstChild("HyCMDs")
+
+if hyCmds then
+    hyCmds:Destroy()
+end
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Biem6ondo/Admin/main/HyCMDs"))()
 end,
 }
 
