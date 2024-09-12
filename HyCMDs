@@ -1052,16 +1052,44 @@ end,
             end
         end
     end)
+
+local player = game.Players.LocalPlayer
+local camera = game.Workspace.CurrentCamera
+
+function deleteCamera()
+    camera:Destroy()
+end
+
+function restoreCamera()
+    camera = Instance.new("Camera")
+    camera.Parent = game.Workspace
+    game.Workspace.CurrentCamera = camera
+    camera.CameraType = Enum.CameraType.Custom
+    camera.CameraSubject = player.Character.Humanoid
+end
+
+deleteCamera()
+restoreCamera()
 end,
 
 ["fixcam"] = function()
-    local cam = workspace.CurrentCamera
-    cam.CameraType = Enum.CameraType.Custom
-    cam.CameraSubject = game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
-    cam.FieldOfView = 70 -- Thiết lập lại FOV mặc định
-    cam.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 5, -10)
-    game.Players.LocalPlayer.CameraMaxZoomDistance = 128
-    game.Players.LocalPlayer.CameraMinZoomDistance = 0.5
+    local player = game.Players.LocalPlayer
+local camera = game.Workspace.CurrentCamera
+
+function deleteCamera()
+    camera:Destroy()
+end
+
+function restoreCamera()
+    camera = Instance.new("Camera")
+    camera.Parent = game.Workspace
+    game.Workspace.CurrentCamera = camera
+    camera.CameraType = Enum.CameraType.Custom
+    camera.CameraSubject = player.Character.Humanoid
+end
+
+deleteCamera()
+restoreCamera()
 end,
 
 ["tptool"] = function()
@@ -1794,25 +1822,10 @@ for _, otherPlayer in pairs(game.Players:GetPlayers()) do
     end
 end
 
--- Xóa ESP cho chính người chơi
 local highlight = player.Character:FindFirstChildOfClass("Highlight")
 if highlight then
     highlight:Destroy()
 end
-end,
-
-["1"] = function()
--- Tạo một phần với các thuộc tính được yêu cầu
-local part = Instance.new("Part")
-
--- Đặt các thuộc tính của phần
-part.Position = Vector3.new(0, 20.1, 0)
-part.Size = Vector3.new(10000, 1, 10000) -- Kích thước lớn: 10000, 1, 10000
-part.Transparency = 1 -- Độ mờ: 0 (hoàn toàn không trong suốt)
-part.Anchored = true -- Đặt part là neo
-
--- Đặt phần vào Workspace
-part.Parent = game.Workspace
 end,
 
 ["addtools2"] = function()
@@ -2843,8 +2856,6 @@ end,
 local plr = game.Players.LocalPlayer
 local character = plr.Character or plr.CharacterAdded:Wait()
 local animate = character:WaitForChild("Animate")
-
--- Cập nhật các AnimationId mới
 animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=616006778"
 animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=616008087"
 animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=616010382"
@@ -2852,19 +2863,13 @@ animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=616013216"
 animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=616008936"
 animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=616003713"
 animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=616005863"
-
--- Đảm bảo đối tượng Animate không bị vô hiệu hóa
 animate.Disabled = false
 end,
 
 ["magicbox🙂"] = function()
--- Tạo một vòng tay phép thuật cho người chơi
-
--- Tham chiếu đến người chơi hiện tại
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 
--- Tạo vòng tay phép thuật
 local magicBracelet = Instance.new("Part")
 magicBracelet.Name = "MagicBracelet"
 magicBracelet.Size = Vector3.new(1, 1, 1)
@@ -2872,23 +2877,20 @@ magicBracelet.Anchored = true
 magicBracelet.CanCollide = false
 magicBracelet.BrickColor = BrickColor.new("Bright blue")
 magicBracelet.Material = Enum.Material.Neon
-magicBracelet.CFrame = character.HumanoidRootPart.CFrame * CFrame.new(0, 2, 0) -- Đặt vòng tay trên người chơi
+magicBracelet.CFrame = character.HumanoidRootPart.CFrame * CFrame.new(0, 2, 0)
 magicBracelet.Parent = workspace
 
--- Tạo hiệu ứng ánh sáng
 local light = Instance.new("PointLight")
 light.Brightness = 5
 light.Range = 10
 light.Color = Color3.fromRGB(0, 255, 255)
 light.Parent = magicBracelet
 
--- Tạo hiệu ứng âm thanh
 local sound = Instance.new("Sound")
-sound.SoundId = "rbxassetid://3636730677" -- ID âm thanh vui nhộn
+sound.SoundId = "rbxassetid://3636730677"
 sound.Volume = 1
 sound.Parent = magicBracelet
 
--- Tạo GUI để hiển thị văn bản trên màn hình
 local function createScreenMessage(text)
     local screenGui = Instance.new("ScreenGui")
     screenGui.Name = "ScreenMessageGui"
@@ -2904,7 +2906,6 @@ local function createScreenMessage(text)
     textLabel.Parent = screenGui
 end
 
--- Tạo hiệu ứng màn hình đỏ khi chết
 local function createRedScreenEffect()
     local screenGui = Instance.new("ScreenGui")
     screenGui.Name = "RedScreenGui"
@@ -2917,13 +2918,12 @@ local function createRedScreenEffect()
     redFrame.Parent = screenGui
 end
 
--- Tạo hiệu ứng cháy cho các bộ phận cơ thể
 local function addFireEffect(part)
     local fire = Instance.new("Fire")
     fire.Size = 2
     fire.Heat = 10
-    fire.Color = Color3.fromRGB(255, 0, 0) -- Màu đỏ
-    fire.SecondaryColor = Color3.fromRGB(255, 165, 0) -- Màu cam
+    fire.Color = Color3.fromRGB(255, 0, 0)
+    fire.SecondaryColor = Color3.fromRGB(255, 165, 0)
     fire.Parent = part
 end
 
