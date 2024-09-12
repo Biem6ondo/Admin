@@ -906,10 +906,13 @@ end,
 
 -- Lệnh Unfreecam2
 ["unfreecam2"] = function()
+    -- Ngắt kết nối script Freecam2
     local freecamScript = game.Workspace:FindFirstChild("FreecamScript") or game.Players.LocalPlayer.PlayerScripts:FindFirstChild("FreecamScript")
     if freecamScript then
         freecamScript:Destroy()
     end
+
+    -- Đảm bảo nhân vật không còn bị đóng băng
     local character = game.Players.LocalPlayer.Character
     if character then
         for _, part in ipairs(character:GetChildren()) do
@@ -918,11 +921,13 @@ end,
             end
         end
     end
+
+    -- Đặt lại camera để có thể nhìn xung quanh
     local cam = workspace.CurrentCamera
     cam.CameraType = Enum.CameraType.Custom
-end
 end,
 
+-- Lệnh Freecam2
 ["freecam2"] = function()
     local cam = workspace.CurrentCamera
     local UIS = game:GetService("UserInputService")
@@ -940,6 +945,7 @@ end,
     speed /= 10
     if onMobile then sens *= 2 end
 
+    -- Đóng băng nhân vật
     local character = game.Players.LocalPlayer.Character
     if character then
         for _, part in ipairs(character:GetChildren()) do
@@ -1046,6 +1052,24 @@ end,
             end
         end
     end)
+
+local player = game.Players.LocalPlayer
+local camera = game.Workspace.CurrentCamera
+
+function deleteCamera()
+    camera:Destroy()
+end
+
+function restoreCamera()
+    camera = Instance.new("Camera")
+    camera.Parent = game.Workspace
+    game.Workspace.CurrentCamera = camera
+    camera.CameraType = Enum.CameraType.Custom
+    camera.CameraSubject = player.Character.Humanoid
+end
+
+deleteCamera()
+restoreCamera()
 end,
 
 ["fixcam"] = function()
