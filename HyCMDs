@@ -920,24 +920,7 @@ end,
     end
     local cam = workspace.CurrentCamera
     cam.CameraType = Enum.CameraType.Custom
-end)
-local player = game.Players.LocalPlayer
-local camera = game.Workspace.CurrentCamera
-
-function deleteCamera()
-    camera:Destroy()
 end
-
-function restoreCamera()
-    camera = Instance.new("Camera")
-    camera.Parent = game.Workspace
-    game.Workspace.CurrentCamera = camera
-    camera.CameraType = Enum.CameraType.Custom
-    camera.CameraSubject = player.Character.Humanoid
-end
-
-deleteCamera()
-restoreCamera()
 end,
 
 ["freecam2"] = function()
