@@ -3862,6 +3862,7 @@ if LocalPlayer.Character then
 	CharacterAdded(LocalPlayer.Character)
 end
 LocalPlayer.CharacterAdded:Connect(CharacterAdded)
+end,
 }
 
 -- End Command!
