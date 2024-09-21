@@ -3132,6 +3132,144 @@ end
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Biem6ondo/Admin/main/HyCMDs"))()
 end,
+
+["executor"] = function()
+local ScreenGui = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local TB = Instance.new("TextBox")
+local IYCommandButton = Instance.new("TextButton")
+local ExecuteButton = Instance.new("TextButton")
+local CopyScriptButton = Instance.new("TextButton")
+local DeleteScriptButton = Instance.new("TextButton")
+local CloseButton = Instance.new("TextButton")
+local ToggleButton = Instance.new("TextButton")
+local SizeGuisButton = Instance.new("TextButton")
+local UICornerFrame = Instance.new("UICorner")
+local UICornerButton = Instance.new("UICorner")
+local UICornerToggle = Instance.new("UICorner")
+local UICornerSizeButton = Instance.new("UICorner")
+
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.ResetOnSpawn = false
+
+Frame.Size = UDim2.new(0, 400, 0, 330)
+Frame.Position = UDim2.new(0.5, -200, 0.5, -150)
+Frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Frame.Visible = false
+Frame.Parent = ScreenGui
+
+UICornerFrame.CornerRadius = UDim.new(0, 10)
+UICornerFrame.Parent = Frame
+
+TB.Size = UDim2.new(0, 380, 0, 150)
+TB.Position = UDim2.new(0, 10, 0, 40)
+TB.Text = ""
+TB.TextColor3 = Color3.fromRGB(255, 255, 255)
+TB.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+TB.ClearTextOnFocus = false
+TB.TextWrapped = true
+TB.TextXAlignment = Enum.TextXAlignment.Left
+TB.Parent = Frame
+
+IYCommandButton.Size = UDim2.new(0, 180, 0, 30)
+IYCommandButton.Position = UDim2.new(0, 10, 0, 200)
+IYCommandButton.Text = "IY Command"
+IYCommandButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+IYCommandButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+IYCommandButton.Parent = Frame
+
+ExecuteButton.Size = UDim2.new(0, 180, 0, 30)
+ExecuteButton.Position = UDim2.new(0, 200, 0, 200)
+ExecuteButton.Text = "Execute"
+ExecuteButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ExecuteButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+ExecuteButton.Parent = Frame
+
+CopyScriptButton.Size = UDim2.new(0, 180, 0, 30)
+CopyScriptButton.Position = UDim2.new(0, 10, 0, 240)
+CopyScriptButton.Text = "Copy script"
+CopyScriptButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+CopyScriptButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+CopyScriptButton.Parent = Frame
+
+DeleteScriptButton.Size = UDim2.new(0, 180, 0, 30)
+DeleteScriptButton.Position = UDim2.new(0, 200, 0, 240)
+DeleteScriptButton.Text = "Delete Script"
+DeleteScriptButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+DeleteScriptButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+DeleteScriptButton.Parent = Frame
+
+CloseButton.Size = UDim2.new(0, 380, 0, 30)
+CloseButton.Position = UDim2.new(0, 10, 0, 280)
+CloseButton.Text = "[X] CLOSE"
+CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+CloseButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+CloseButton.Parent = Frame
+
+ToggleButton.Size = UDim2.new(0, 150, 0, 30)
+ToggleButton.Position = UDim2.new(0.5, -75, 0.1, 0)
+ToggleButton.Text = "Toggle Executor"
+ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ToggleButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+ToggleButton.Parent = ScreenGui
+
+UICornerToggle.CornerRadius = UDim.new(0, 10)
+UICornerToggle.Parent = ToggleButton
+
+UICornerSizeButton.CornerRadius = UDim.new(0, 10)
+UICornerSizeButton.Parent = SizeGuisButton
+
+for _, button in pairs({IYCommandButton, ExecuteButton, CopyScriptButton, DeleteScriptButton, CloseButton, ToggleButton}) do
+    local UICorner = Instance.new("UICorner")
+    UICorner.CornerRadius = UDim.new(0, 10)
+    UICorner.Parent = button
+end
+
+local function changeButtonColor(button, color)
+    button.BackgroundColor3 = color
+    wait(0.5)
+    button.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+end
+
+IYCommandButton.MouseButton1Click:Connect(function()
+    changeButtonColor(IYCommandButton, Color3.fromRGB(255, 165, 0))
+    local success, err = pcall(function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+    end)
+    if not success then
+        warn("Error: " .. err)
+    end
+end)
+
+ExecuteButton.MouseButton1Click:Connect(function()
+    changeButtonColor(ExecuteButton, Color3.fromRGB(0, 255, 0))
+    local scriptToRun = TB.Text
+    local success, err = pcall(function()
+        loadstring(scriptToRun)()
+    end)
+    if not success then
+        warn("Error: " .. err)
+    end
+end)
+
+CopyScriptButton.MouseButton1Click:Connect(function()
+    changeButtonColor(CopyScriptButton, Color3.fromRGB(0, 0, 255))
+    setclipboard(TB.Text)
+end)
+
+DeleteScriptButton.MouseButton1Click:Connect(function()
+    changeButtonColor(DeleteScriptButton, Color3.fromRGB(255, 0, 0))
+    TB.Text = ""
+end)
+
+CloseButton.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy()
+end)
+
+ToggleButton.MouseButton1Click:Connect(function()
+    Frame.Visible = not Frame.Visible
+end)
+end,
 }
 
 -- End Command!
