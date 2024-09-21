@@ -1,3 +1,137 @@
+-- Gui update
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "MyGUI"
+ScreenGui.Parent = game.Players.LocalPlayer.PlayerGui
+
+local Frame = Instance.new("Frame")
+Frame.Name = "MainFrame"
+Frame.Parent = ScreenGui
+Frame.Size = UDim2.new(0.5, 0, 0.5, 0)
+Frame.Position = UDim2.new(0.25, 0, 0.25, 0)
+Frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Frame.BorderSizePixel = 0
+Frame.ClipsDescendants = true
+
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 10)
+UICorner.Parent = Frame
+
+local Title = Instance.new("TextLabel")
+Title.Name = "Title"
+Title.Parent = Frame
+Title.Size = UDim2.new(1, 0, 0.1, 0)
+Title.Position = UDim2.new(0, 0, 0, 0)
+Title.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Title.Text = "Title"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.TextScaled = true
+Title.TextStrokeTransparency = 0.8
+
+local TopCornersFrame = Instance.new("Frame")
+TopCornersFrame.Name = "TopCornersFrame"
+TopCornersFrame.Parent = Title
+TopCornersFrame.Size = UDim2.new(1, 0, 1, 0)
+TopCornersFrame.BackgroundColor3 = Title.BackgroundColor3
+TopCornersFrame.BorderSizePixel = 0
+TopCornersFrame.BackgroundTransparency = 1
+
+local UICornerTop = Instance.new("UICorner")
+UICornerTop.CornerRadius = UDim.new(0, 10)
+UICornerTop.Parent = TopCornersFrame
+
+local CloseButton = Instance.new("TextButton")
+CloseButton.Name = "CloseButton"
+CloseButton.Parent = Frame
+CloseButton.Size = UDim2.new(0.1, 0, 0.1, 0)
+CloseButton.Position = UDim2.new(0.9, 0, 0, 0)
+CloseButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+CloseButton.Text = "❌"
+CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+CloseButton.TextScaled = true
+
+local UICornerButton = Instance.new("UICorner")
+UICornerButton.CornerRadius = UDim.new(0, 10)
+UICornerButton.Parent = CloseButton
+
+local InfoLabel = Instance.new("TextLabel")
+InfoLabel.Name = "InfoLabel"
+InfoLabel.Parent = Frame
+InfoLabel.Size = UDim2.new(1, 0, 0.9, 0)
+InfoLabel.Position = UDim2.new(0, 0, 0.1, 0)
+InfoLabel.BackgroundTransparency = 1
+InfoLabel.Text = "No update/n..."
+InfoLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+InfoLabel.TextScaled = true
+InfoLabel.TextSize = 5
+
+local DontShowAgainFrame = Instance.new("Frame")
+DontShowAgainFrame.Name = "DontShowAgainFrame"
+DontShowAgainFrame.Parent = Frame
+DontShowAgainFrame.Size = UDim2.new(1, 0, 0.1, 0)
+DontShowAgainFrame.Position = UDim2.new(0, 0, 0.9, 0)
+DontShowAgainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+
+local UICornerDontShowAgain = Instance.new("UICorner")
+UICornerDontShowAgain.CornerRadius = UDim.new(0, 10)
+UICornerDontShowAgain.Parent = DontShowAgainFrame
+
+local YesButton = Instance.new("TextButton")
+YesButton.Name = "YesButton"
+YesButton.Parent = DontShowAgainFrame
+YesButton.Size = UDim2.new(0.5, 0, 1, 0)
+YesButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+YesButton.Text = "Dont Show Again (One tap)"
+YesButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+YesButton.TextScaled = true
+
+local UICornerYes = Instance.new("UICorner")
+UICornerYes.CornerRadius = UDim.new(0, 10)
+UICornerYes.Parent = YesButton
+
+local UICornerNo = Instance.new("UICorner")
+UICornerNo.CornerRadius = UDim.new(0, 10)
+UICornerNo.Parent = NoButton
+
+Frame.Position = UDim2.new(0.25, 0, 1, 0)
+Frame:TweenPosition(UDim2.new(0.25, 0, 0.25, 0), "Out", "Quad", 0.5)
+
+local Camera = workspace.CurrentCamera
+local BlurEffect = Instance.new("BlurEffect")
+BlurEffect.Name = "BlurEffect"
+BlurEffect.Size = 50
+BlurEffect.Parent = Camera
+
+CloseButton.MouseButton1Click:Connect(function()
+    Frame:TweenPosition(UDim2.new(0.25, 0, 1, 0), "Out", "Quad", 0.5)
+    for i = 50, 0, -10 do
+        BlurEffect.Size = i
+        wait(0)
+    end
+    BlurEffect:Destroy()
+    wait(0.5)
+    ScreenGui:Destroy()
+end)
+
+YesButton.MouseButton1Click:Connect(function()
+    writefile("V0.1.txt", "1")
+    CloseButton:MouseButton1Click()
+end)
+
+
+Frame.AncestryChanged:Connect(function()
+    if not Frame:IsDescendantOf(ScreenGui) then
+        BlurEffect:Destroy()
+    end
+end)
+
+-- Kiểm tra nếu không hiện lại
+if isfile("V0.1.txt") then
+    local value = readfile("V0.1.txt")
+    if value == "1" then
+        ScreenGui:Destroy()
+    end
+end
+
 -- Gui
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "MyGUI"
@@ -60,7 +194,7 @@ InfoLabel.Parent = Frame
 InfoLabel.Size = UDim2.new(1, 0, 0.9, 0)
 InfoLabel.Position = UDim2.new(0, 0, 0.1, 0)
 InfoLabel.BackgroundTransparency = 1
-InfoLabel.Text = "Hello GUy just the guuiiiiiiiii, oh"
+InfoLabel.Text = "Suc/nHello"
 InfoLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 InfoLabel.TextScaled = true
 InfoLabel.TextSize = 5
