@@ -59,7 +59,7 @@ InfoLabel.Parent = Frame
 InfoLabel.Size = UDim2.new(1, 0, 0.9, 0)
 InfoLabel.Position = UDim2.new(0, 0, 0.1, 0)
 InfoLabel.BackgroundTransparency = 1
-InfoLabel.Text = "No update/n..."
+InfoLabel.Text = "Update \n -Optimization"
 InfoLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 InfoLabel.TextScaled = true
 InfoLabel.TextSize = 5
@@ -113,7 +113,7 @@ CloseButton.MouseButton1Click:Connect(function()
 end)
 
 YesButton.MouseButton1Click:Connect(function()
-    writefile("V0.1.txt", "1")
+    writefile("V0.1_1.txt", "1")
     CloseButton:MouseButton1Click()
 end)
 
@@ -124,9 +124,9 @@ Frame.AncestryChanged:Connect(function()
     end
 end)
 
--- Kiểm tra nếu không hiện lại
-if isfile("V0.1.txt") then
-    local value = readfile("V0.1.txt")
+-- File
+if isfile("V0.1_1.txt") then
+    local value = readfile("V0.1_1.txt")
     if value == "1" then
         ScreenGui:Destroy()
     end
@@ -161,7 +161,6 @@ Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.TextScaled = true
 Title.TextStrokeTransparency = 0.8
 
--- Rounded corners for the title
 local TopCornersFrame = Instance.new("Frame")
 TopCornersFrame.Name = "TopCornersFrame"
 TopCornersFrame.Parent = Title
@@ -194,12 +193,11 @@ InfoLabel.Parent = Frame
 InfoLabel.Size = UDim2.new(1, 0, 0.9, 0)
 InfoLabel.Position = UDim2.new(0, 0, 0.1, 0)
 InfoLabel.BackgroundTransparency = 1
-InfoLabel.Text = "Suc/nHello!"
+InfoLabel.Text = "Suc\nHello!"
 InfoLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 InfoLabel.TextScaled = true
 InfoLabel.TextSize = 5
 
--- "Dont show again" buttons
 local DontShowAgainFrame = Instance.new("Frame")
 DontShowAgainFrame.Name = "DontShowAgainFrame"
 DontShowAgainFrame.Parent = Frame
@@ -260,7 +258,7 @@ Frame.AncestryChanged:Connect(function()
     end
 end)
 
--- Kiểm tra nếu không hiện lại
+-- File
 if isfile("DontShowAgain.txt") then
     local value = readfile("DontShowAgain.txt")
     if value == "1" then
@@ -3072,8 +3070,6 @@ end,
 local plr = game.Players.LocalPlayer
 local character = plr.Character or plr.CharacterAdded:Wait()
 local animate = character:WaitForChild("Animate")
-
--- Cập nhật các AnimationId
 animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=616111295"
 animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=616113536"
 animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=616122287"
@@ -3081,8 +3077,6 @@ animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=616117076"
 animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=616115533"
 animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=616104706"
 animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=616108001"
-
--- Đảm bảo đối tượng Animate không bị vô hiệu hóa
 animate.Disabled = false
 end,
 
@@ -3090,8 +3084,6 @@ end,
 local plr = game.Players.LocalPlayer
 local character = plr.Character or plr.CharacterAdded:Wait()
 local animate = character:WaitForChild("Animate")
-
--- Cập nhật các AnimationId mới
 animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=616158929"
 animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=616160636"
 animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=616168032"
@@ -3099,8 +3091,6 @@ animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=616163682"
 animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=616161997"
 animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=616156119"
 animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=616157476"
-
--- Đảm bảo đối tượng Animate không bị vô hiệu hóa
 animate.Disabled = false
 end,
 
@@ -3108,8 +3098,6 @@ end,
 local plr = game.Players.LocalPlayer
 local character = plr.Character or plr.CharacterAdded:Wait()
 local animate = character:WaitForChild("Animate")
-
--- Cập nhật các AnimationId mới
 animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=707742142"
 animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=707855907"
 animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=707897309"
@@ -3117,8 +3105,6 @@ animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=707861613"
 animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=707853694"
 animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=707826056"
 animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=707829716"
-
--- Đảm bảo đối tượng Animate không bị vô hiệu hóa
 animate.Disabled = false
 end,
 
@@ -3134,291 +3120,6 @@ animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=616008936"
 animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=616003713"
 animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=616005863"
 animate.Disabled = false
-end,
-
-["magicbox🙂"] = function()
-local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-
-local magicBracelet = Instance.new("Part")
-magicBracelet.Name = "MagicBracelet"
-magicBracelet.Size = Vector3.new(1, 1, 1)
-magicBracelet.Anchored = true
-magicBracelet.CanCollide = false
-magicBracelet.BrickColor = BrickColor.new("Bright blue")
-magicBracelet.Material = Enum.Material.Neon
-magicBracelet.CFrame = character.HumanoidRootPart.CFrame * CFrame.new(0, 2, 0)
-magicBracelet.Parent = workspace
-
-local light = Instance.new("PointLight")
-light.Brightness = 5
-light.Range = 10
-light.Color = Color3.fromRGB(0, 255, 255)
-light.Parent = magicBracelet
-
-local sound = Instance.new("Sound")
-sound.SoundId = "rbxassetid://3636730677"
-sound.Volume = 1
-sound.Parent = magicBracelet
-
-local function createScreenMessage(text)
-    local screenGui = Instance.new("ScreenGui")
-    screenGui.Name = "ScreenMessageGui"
-    screenGui.Parent = player:WaitForChild("PlayerGui")
-
-    local textLabel = Instance.new("TextLabel")
-    textLabel.Text = text
-    textLabel.FontSize = Enum.FontSize.Size48
-    textLabel.TextColor3 = Color3.new(1, 0, 0) -- Màu đỏ
-    textLabel.BackgroundTransparency = 1
-    textLabel.Size = UDim2.new(1, 0, 1, 0)
-    textLabel.TextScaled = true
-    textLabel.Parent = screenGui
-end
-
-local function createRedScreenEffect()
-    local screenGui = Instance.new("ScreenGui")
-    screenGui.Name = "RedScreenGui"
-    screenGui.Parent = player:WaitForChild("PlayerGui")
-
-    local redFrame = Instance.new("Frame")
-    redFrame.Size = UDim2.new(1, 0, 1, 0)
-    redFrame.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- Màu đỏ
-    redFrame.BackgroundTransparency = 0.68 -- Độ trong suốt
-    redFrame.Parent = screenGui
-end
-
-local function addFireEffect(part)
-    local fire = Instance.new("Fire")
-    fire.Size = 2
-    fire.Heat = 10
-    fire.Color = Color3.fromRGB(255, 0, 0)
-    fire.SecondaryColor = Color3.fromRGB(255, 165, 0)
-    fire.Parent = part
-end
-
-local function turnCharacterBlack()
-    for _, part in pairs(character:GetDescendants()) do
-        if part:IsA("BasePart") then
-            part.BrickColor = BrickColor.new("Black")
-            part.Material = Enum.Material.SmoothPlastic
-            addFireEffect(part)
-        end
-    end
-end
-
-magicBracelet.Touched:Connect(function(hit)
-    local humanoid = hit.Parent:FindFirstChild("Humanoid")
-    if humanoid then
-        sound:Play()
-        local explosion = Instance.new("Explosion")
-        explosion.Position = magicBracelet.Position
-        explosion.BlastRadius = 10
-        explosion.BlastPressure = 1000
-        explosion.Parent = workspace
-        
-        createScreenMessage("😂👊")
-
-        humanoid.Died:Connect(function()
-            createRedScreenEffect()
-            turnCharacterBlack()
-        end)
-        humanoid.Health = 0
-        humanoid:ChangeState(Enum.HumanoidStateType.Physics)
-        character.HumanoidRootPart.Anchored = true
-    end
-end)
-end,
-
-["gameinfo"] = function()
-local SG = Instance.new("ScreenGui")
-SG.Name = "MyGUI"
-SG.Parent = game.Players.LocalPlayer.PlayerGui
-
-local FR = Instance.new("Frame")
-FR.Size = UDim2.new(0.5, 0, 0.5, 0)
-FR.Position = UDim2.new(0.25, 0, 0.25, 0)
-FR.BackgroundColor3 = Color3.new(0, 0, 0)
-FR.Parent = SG
-
-local TF = Instance.new("Frame")
-TF.Size = UDim2.new(1, 0, 0.1, 0)
-TF.Position = UDim2.new(0, 0, 0, 0)
-TF.BackgroundColor3 = Color3.new(0, 0, 0)
-TF.Parent = FR
-
-local TL = Instance.new("TextLabel")
-TL.Size = UDim2.new(1, 0, 1, 0)
-TL.Text = "Server Information"
-TL.TextColor3 = Color3.new(1, 1, 1)
-TL.BackgroundTransparency = 1
-TL.Parent = TF
-
-local CB = Instance.new("TextButton")
-CB.Size = UDim2.new(0.1, 0, 1, 0)
-CB.Position = UDim2.new(1, -50, 0, 0)
-CB.Text = "X"
-CB.TextColor3 = Color3.new(1, 0, 0)
-CB.BackgroundColor3 = Color3.new(0, 0, 0)
-CB.Parent = TF
-
-CB.MouseButton1Click:Connect(function()
-    SG:Destroy()
-end)
-
-local IF = Instance.new("Frame")
-IF.Size = UDim2.new(1, 0, 0.8, 0)
-IF.Position = UDim2.new(0, 0, 0.1, 0)
-IF.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
-IF.Parent = FR
-
-local labels = {}
-
-local function createLabel(text, position)
-    local label = Instance.new("TextLabel")
-    label.Size = UDim2.new(1, 0, 0.15, 0)
-    label.Position = UDim2.new(0, 0, position, 0)
-    label.Text = text
-    label.TextColor3 = Color3.new(1, 1, 1)
-    label.BackgroundTransparency = 1
-    label.TextScaled = true
-    label.Parent = IF
-    return label
-end
-
-labels.serverId = createLabel("Id Server: " .. game.JobId, 0)
-labels.serverTime = createLabel("Server Time: " .. os.date("%H:%M:%S", os.time()), 0.15)
-labels.playerCount = createLabel("Number of Players: " .. #game.Players:GetPlayers(), 0.3)
-labels.gameName = createLabel("Name Game: " .. game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name, 0.45)
-labels.gameId = createLabel("Id (Id trò chơi): " .. game.PlaceId, 0.6)
-labels.avgPing = createLabel("Average ping of server: ", 0.75)
-
-local LF = Instance.new("Frame")
-LF.Size = UDim2.new(1, 0, 0.1, 0)
-LF.Position = UDim2.new(0, 0, 0.9, 0)
-LF.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
-LF.Parent = FR
-
-local languages = {"En", "Vi", "Ru", "Sp", "Th"}
-local currentLanguage = "En"
-local languageButtons = {}
-
-local function updateLanguageButtons()
-    for _, button in pairs(languageButtons) do
-        button.TextColor3 = button.Text == currentLanguage and Color3.new(0, 1, 0) or Color3.new(1, 1, 1)
-    end
-end
-
-for i, lang in ipairs(languages) do
-    local LB = Instance.new("TextButton")
-    LB.Size = UDim2.new(0.2, 0, 1, 0)
-    LB.Position = UDim2.new((i - 1) * 0.2, 0, 0, 0)
-    LB.Text = lang
-    LB.TextColor3 = Color3.new(1, 1, 1)
-    LB.BackgroundColor3 = Color3.new(0, 0, 0)
-    LB.Parent = LF
-    
-    LB.MouseButton1Click:Connect(function()
-        currentLanguage = lang
-        updateLanguageButtons()
-local translations = {
-    En = {
-        serverId = "Server ID: ",
-        serverTime = "Server Time: ",
-        playerCount = "Number of Players: ",
-        gameName = "Game Name: ",
-        gameId = "Game ID: ",
-        avgPing = "Average Ping of Server: ",
-    },
-    Vi = {
-        serverId = "ID Máy Chủ: ",
-        serverTime = "Thời Gian Máy Chủ: ",
-        playerCount = "Số Người Chơi: ",
-        gameName = "Tên Trò Chơi: ",
-        gameId = "ID Trò Chơi: ",
-        avgPing = "Ping Trung Bình Của Máy Chủ: ",
-    },
-    Ru = {
-        serverId = "ID Сервера: ",
-        serverTime = "Время Сервера: ",
-        playerCount = "Количество Игроков: ",
-        gameName = "Название Игры: ",
-        gameId = "ID Игры: ",
-        avgPing = "Средний Пинг Сервера: ",
-    },
-    Sp = {
-        serverId = "ID del Servidor: ",
-        serverTime = "Hora del Servidor: ",
-        playerCount = "Número de Jugadores: ",
-        gameName = "Nombre del Juego: ",
-        gameId = "ID del Juego: ",
-        avgPing = "Ping Medio del Servidor: ",
-    },
-    Th = {
-        serverId = "ID ของเซิร์ฟเวอร์: ",
-        serverTime = "เวลาของเซิร์ฟเวอร์: ",
-        playerCount = "จำนวนผู้เล่น: ",
-        gameName = "ชื่อเกม: ",
-        gameId = "ID ของเกม: ",
-        avgPing = "ค่าเฉลี่ย Ping ของเซิร์ฟเวอร์: ",
-    }
-}
-
-local function updateLabels()
-    labels.serverId.Text = translations[currentLanguage].serverId .. game.JobId
-    labels.serverTime.Text = translations[currentLanguage].serverTime .. os.date("%H:%M:%S", os.time())
-    labels.playerCount.Text = translations[currentLanguage].playerCount .. #game.Players:GetPlayers()
-    labels.gameName.Text = translations[currentLanguage].gameName .. game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
-    labels.gameId.Text = translations[currentLanguage].gameId .. game.PlaceId
-
-    local totalPing = 0
-    local playerCount = #game.Players:GetPlayers()
-
-    for _, player in ipairs(game.Players:GetPlayers()) do
-        totalPing = totalPing + player:GetNetworkPing()
-    end
-
-    local averagePing = playerCount > 0 and totalPing / playerCount or 0
-    labels.avgPing.Text = translations[currentLanguage].avgPing .. string.format("%.2f ms", averagePing * 1000)
-end
-
-local function updateServerInfo()
-    updateLabels()
-end
-
-while SG.Parent do
-    updateServerInfo()
-    wait(0)
-end
-    end)
-    
-    languageButtons[lang] = LB
-end
-
-updateLanguageButtons()
-
-local function updateServerInfo()
-    labels.serverId.Text = "Id Server: " .. game.JobId
-    labels.serverTime.Text = "Server Time: " .. os.date("%H:%M:%S", os.time())
-    labels.playerCount.Text = "Number of Players: " .. #game.Players:GetPlayers()
-    labels.gameName.Text = "Name Game: " .. game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
-    labels.gameId.Text = "Id (Id trò chơi): " .. game.PlaceId
-
-    local totalPing = 0
-    local playerCount = #game.Players:GetPlayers()
-
-    for _, player in ipairs(game.Players:GetPlayers()) do
-        totalPing = totalPing + player:GetNetworkPing()
-    end
-
-    local averagePing = playerCount > 0 and totalPing / playerCount or 0
-    labels.avgPing.Text = "Average ping of server: " .. string.format("%.2f ms", averagePing * 1000)
-end
-
-while SG.Parent do
-    updateServerInfo()
-    wait(0)
-end
 end,
 
 ["checkupdate"] = function()
@@ -3452,7 +3153,7 @@ local function processCommand(commandText)
             loadingBar.Size = UDim2.new(0, 0, 1, 0)
         end)
     else
-        loadingLabel.Text = "Invalid Command! Enter 'command' to learn the commands!. Other: Info"
+        loadingLabel.Text = "Invalid Command! Enter 'command' to learn the commands!"
         loadingLabel.TextColor3 = Color3.fromRGB(255,0,0)
         loadingLabel.Position = UDim2.new(0, 10, 0, 106)
         loadingLabel.Size = UDim2.new(0, 310, 0, 20)
