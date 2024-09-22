@@ -1,4 +1,4 @@
--- Gui update
+s-- Gui update
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "MyGUI"
 ScreenGui.Parent = game.Players.LocalPlayer.PlayerGui
@@ -17,19 +17,19 @@ UICorner.CornerRadius = UDim.new(0, 10)
 UICorner.Parent = Frame
 
 local Title = Instance.new("TextLabel")
-Title.Name = "Title"
+Title.Name = "Update"
 Title.Parent = Frame
 Title.Size = UDim2.new(1, 0, 0.1, 0)
 Title.Position = UDim2.new(0, 0, 0, 0)
 Title.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-Title.Text = "Title"
+Title.Text = "Update"
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.TextScaled = true
 Title.TextStrokeTransparency = 0.8
 
 local TopCornersFrame = Instance.new("Frame")
 TopCornersFrame.Name = "TopCornersFrame"
-TopCornersFrame.Parent = Update
+TopCornersFrame.Parent = Title
 TopCornersFrame.Size = UDim2.new(1, 0, 1, 0)
 TopCornersFrame.BackgroundColor3 = Title.BackgroundColor3
 TopCornersFrame.BorderSizePixel = 0
@@ -151,12 +151,12 @@ UICorner.CornerRadius = UDim.new(0, 10)
 UICorner.Parent = Frame
 
 local Title = Instance.new("TextLabel")
-Title.Name = "Title"
+Title.Name = "Hey"
 Title.Parent = Frame
 Title.Size = UDim2.new(1, 0, 0.1, 0)
 Title.Position = UDim2.new(0, 0, 0, 0)
 Title.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-Title.Text = "Title"
+Title.Text = "Introduce"
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.TextScaled = true
 Title.TextStrokeTransparency = 0.8
