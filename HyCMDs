@@ -266,6 +266,46 @@ if isfile("DontShowAgain.txt") then
     end
 end
 
+local player = game.Players.LocalPlayer
+local screenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+local textLabel = Instance.new("TextLabel", screenGui)
+
+textLabel.Size = UDim2.new(0, 200, 0, 50)
+textLabel.Position = UDim2.new(0, 10, 1, -60)
+textLabel.BackgroundTransparency = 1
+textLabel.TextScaled = true
+textLabel.Text = "Remaining: 0 left"
+textLabel.Visible = false
+
+local function updateCount()
+    local guiCount = 0
+    for _, gui in pairs(player.PlayerGui:GetChildren()) do
+        if gui.Name == "MyGUI" then
+            guiCount = guiCount + 1
+        end
+    end
+
+    if guiCount > 0 then
+        textLabel.Text = "Remaining: " .. guiCount .. " left"
+        textLabel.Visible = true
+
+        if guiCount == 1 then
+            textLabel.TextColor3 = Color3.new(1, 0, 0) -- Đỏ
+        elseif guiCount > 1 and guiCount < 6 then
+            textLabel.TextColor3 = Color3.new(1, 1, 1) -- Trắng
+        elseif guiCount >= 6 then
+            textLabel.TextColor3 = Color3.new(0, 1, 0) -- Xanh lá
+        end
+    else
+        textLabel.Visible = false
+    end
+end
+
+while true do
+    updateCount()
+    wait(1) -- Cập nhật mỗi giây
+end
+
 local function checkGuiExists()
     local player = game.Players.LocalPlayer
     local playerGui = player:WaitForChild("PlayerGui")
