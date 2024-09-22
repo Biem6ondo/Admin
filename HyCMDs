@@ -303,7 +303,7 @@ end
 
 while true do
     updateCount()
-    wait(1) -- Cập nhật mỗi giây
+    wait(0)
 end
 
 local function checkGuiExists()
