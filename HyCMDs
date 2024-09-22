@@ -3673,7 +3673,6 @@ while not EmotesLoaded() do
 end
 Loading:Destroy()
 
---sorting options setup
 table.sort(Emotes, function(a, b)
 	return a.lastupdated > b.lastupdated
 end)
@@ -3855,6 +3854,41 @@ end
 LocalPlayer.CharacterAdded:Connect(CharacterAdded)
 end,
 
+["noclip"] = function()
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local noclipEnabled = true
+
+local function setNoclip(enabled)
+    for _, part in ipairs(character:GetDescendants()) do
+        if part:IsA("BasePart") then
+            part.CanCollide = not enabled
+        end
+    end
+end
+
+setNoclip(noclipEnabled)
+
+character.Humanoid.Died:Connect(function()
+    noclipEnabled = false
+    setNoclip(false)
+end)
+end,
+
+["clip"] = function()
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+local function setClip()
+    for _, part in ipairs(character:GetDescendants()) do
+        if part:IsA("BasePart") then
+            part.CanCollide = true
+        end
+    end
+end
+
+setClip()
+end,
 }
 
 -- End Command!
