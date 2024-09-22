@@ -3568,7 +3568,6 @@ if not game:IsLoaded() then
 	game.Loaded:Wait()
 end
 
---thanks inf yield
 local SynV3 = syn and DrawingImmediate
 if (not is_sirhurt_closure) and (not SynV3) and (syn and syn.protect_gui) then
 	syn.protect_gui(ScreenGui)
@@ -3872,6 +3871,12 @@ setNoclip(noclipEnabled)
 character.Humanoid.Died:Connect(function()
     noclipEnabled = false
     setNoclip(false)
+end)
+
+game:GetService("RunService").Stepped:Connect(function()
+    if noclipEnabled then
+        setNoclip(true)
+    end
 end)
 end,
 
