@@ -1,4 +1,4 @@
-echo -n "local ScreenGui = Instance.new("ScreenGui")
+local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "MyGUI"
 ScreenGui.Parent = game.Players.LocalPlayer.PlayerGui
 
@@ -3865,4 +3865,3 @@ while true do
 
     wait(0)  
 end
-" | base64
