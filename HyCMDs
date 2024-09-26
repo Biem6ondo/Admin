@@ -843,7 +843,7 @@ end,
 end,
 
 ["atl"] = function(value)
-    local player = game.Players.LocalPlayer
+
     local character = player.Character
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")
     
@@ -856,52 +856,190 @@ end,
 end,
 
 ["info"] = function()
-    local screenGui = Instance.new("ScreenGui")
-    screenGui.Name = "InfoGUI"
-    screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+local SG = Instance.new("ScreenGui")
+SG.Name = "MyGUI"
+SG.Parent = game.Players.LocalPlayer.PlayerGui
 
-    local mainFrame = Instance.new("Frame")
-    mainFrame.Size = UDim2.new(0.5, 0, 0.5, 0)
-    mainFrame.Position = UDim2.new(0.25, 0, 0.25, 0)
-    mainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-    mainFrame.BorderSizePixel = 0
-    mainFrame.Parent = screenGui
+local F = Instance.new("Frame")
+F.Name = "MainFrame"
+F.Parent = SG
+F.Size = UDim2.new(0.5, 0, 0.5, 0)
+F.Position = UDim2.new(0.25, 0, 0.25, 0)
+F.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+F.BorderSizePixel = 0
+F.ClipsDescendants = true
 
-    local scrollFrame = Instance.new("ScrollingFrame")
-    scrollFrame.Size = UDim2.new(1, 0, 1, -50)
-    scrollFrame.Position = UDim2.new(0, 0, 0, 0)
-    scrollFrame.CanvasSize = UDim2.new(0, 0, 0, 50)
-    scrollFrame.BackgroundTransparency = 1
-    scrollFrame.Parent = mainFrame
+local UIC = Instance.new("UICorner")
+UIC.CornerRadius = UDim.new(0, 10)
+UIC.Parent = F
 
-    local infoLabel = Instance.new("TextLabel")
-    infoLabel.Size = UDim2.new(1, -10, 0, 10000)
-    infoLabel.Position = UDim2.new(0, 5, 0, 5)
-    infoLabel.Text = [[
-                                                    info:
-Version: Beta: 1
-Name Script: HyCMDs
-Creators: ACE1991ACE
-THANK FOR USE MY SCRIPT ^^
-    ]]
-    infoLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    infoLabel.BackgroundTransparency = 1
-    infoLabel.TextXAlignment = Enum.TextXAlignment.Left
-    infoLabel.TextYAlignment = Enum.TextYAlignment.Top
-    infoLabel.Parent = scrollFrame
-    infoLabel.TextSize = 10
+local T = Instance.new("TextLabel")
+T.Name = "Title"
+T.Parent = F
+T.Size = UDim2.new(1, 0, 0.1, 0)
+T.Position = UDim2.new(0, 0, 0, 0)
+T.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+T.Text = "Info"
+T.TextColor3 = Color3.fromRGB(255, 255, 255)
+T.TextScaled = true
+T.TextStrokeTransparency = 0.8
 
-    local closeButton = Instance.new("TextButton")
-    closeButton.Size = UDim2.new(0, 100, 0, 50)
-    closeButton.Position = UDim2.new(1, -110, 1, -60)
-    closeButton.Text = "Close"
-    closeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-    closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    closeButton.Parent = mainFrame
+local CB = Instance.new("TextButton")
+CB.Name = "CloseButton"
+CB.Parent = F
+CB.Size = UDim2.new(0.1, 0, 0.1, 0)
+CB.Position = UDim2.new(0.9, 0, 0, 0)
+CB.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+CB.Text = "❌"
+CB.TextColor3 = Color3.fromRGB(255, 255, 255)
+CB.TextScaled = true
 
-    closeButton.MouseButton1Click:Connect(function()
-        screenGui:Destroy()
-    end)
+local UICB = Instance.new("UICorner")
+UICB.CornerRadius = UDim.new(0, 10)
+UICB.Parent = CB
+
+local IL = Instance.new("TextLabel")
+IL.Name = "InfoLabel"
+IL.Parent = F
+IL.Size = UDim2.new(1, 0, 0.6, 0)
+IL.Position = UDim2.new(0, 0, 0.1, 0)
+IL.BackgroundTransparency = 1
+IL.TextColor3 = Color3.fromRGB(255, 255, 255)
+IL.TextScaled = true
+
+local CA = Instance.new("TextButton")
+CA.Name = "CopyAllButton"
+CA.Parent = F
+CA.Size = UDim2.new(0.2, 0, 0.1, 0)
+CA.Position = UDim2.new(0.05, 0, 0.8, 0)
+CA.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+CA.Text = "Copy All"
+CA.TextColor3 = Color3.fromRGB(255, 255, 255)
+CA.TextScaled = true
+
+local CG = Instance.new("TextButton")
+CG.Name = "CopyGameButton"
+CG.Parent = F
+CG.Size = UDim2.new(0.2, 0, 0.1, 0)
+CG.Position = UDim2.new(0.25, 0, 0.8, 0)
+CG.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+CG.Text = "Copy Game"
+CG.TextColor3 = Color3.fromRGB(255, 255, 255)
+CG.TextScaled = true
+
+local CS = Instance.new("TextButton")
+CS.Name = "CopyServerButton"
+CS.Parent = F
+CS.Size = UDim2.new(0.2, 0, 0.1, 0)
+CS.Position = UDim2.new(0.45, 0, 0.8, 0)
+CS.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+CS.Text = "Copy Server"
+CS.TextColor3 = Color3.fromRGB(255, 255, 255)
+CS.TextScaled = true
+
+local CY = Instance.new("TextButton")
+CY.Name = "CopyYouButton"
+CY.Parent = F
+CY.Size = UDim2.new(0.2, 0, 0.1, 0)
+CY.Position = UDim2.new(0.65, 0, 0.8, 0)
+CY.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+CY.Text = "Copy 'You'"
+CY.TextColor3 = Color3.fromRGB(255, 255, 255)
+CY.TextScaled = true
+
+local UICC = Instance.new("UICorner")
+UICC.CornerRadius = UDim.new(0, 10)
+UICC.Parent = CA
+UICC:Clone().Parent = CG
+UICC:Clone().Parent = CS
+UICC:Clone().Parent = CY
+
+F.Position = UDim2.new(0.25, 0, 1, 0)
+F:TweenPosition(UDim2.new(0.25, 0, 0.25, 0), "Out", "Quad", 0.5)
+
+local Camera = workspace.CurrentCamera
+local BE = Instance.new("BlurEffect")
+BE.Name = "BlurEffect"
+BE.Size = 50
+BE.Parent = Camera
+
+CB.MouseButton1Click:Connect(function()
+    F:TweenPosition(UDim2.new(0.25, 0, 1, 0), "Out", "Quad", 0.5)
+    for i = 50, 0, -10 do
+        BE.Size = i
+        wait(0)
+    end
+    BE:Destroy()
+    wait(0.5)
+    SG:Destroy()
+end)
+
+F.AncestryChanged:Connect(function()
+    if not F:IsDescendantOf(SG) then
+        BE:Destroy()
+    end
+end)
+
+game:GetService("RunService").Heartbeat:Connect(function()
+    local ST = os.date("!*t", tick())
+    local formattedST = string.format("%02d:%02d:%02d", ST.hour, ST.min, ST.sec)
+
+    local PID = game.PlaceId
+    local gameInfo = game:GetService("MarketplaceService"):GetProductInfo(PID)
+
+    local P = game.Players.LocalPlayer
+    local H = P.Character and P.Character:FindFirstChildOfClass("Humanoid")
+    local WS = H and H.WalkSpeed or 16
+    local JP = H and H.JumpPower or 50
+    local FOV = workspace.CurrentCamera.FieldOfView or 70
+    local health = H and H.Health or 0
+    local maxHealth = H and H.MaxHealth or 0
+    local sitting = H and H:GetState() == Enum.HumanoidStateType.Seated
+
+    local playerCount = #game.Players:GetPlayers()
+
+    IL.Text = string.format("🎮Game\nName: %s\nPlaceID: %d\n💾Server\nPlayer Count: %d\nServer Time: %s\n👤You\nWalkspeed: %d\nJumppower: %d\nFOV: %d\nHealth: %d/%d\nSitting: %s",
+        gameInfo.Name or "Unknown Game",
+        PID,
+        playerCount,
+        formattedST,
+        WS,
+        JP,
+        FOV,
+        health,
+        maxHealth,
+        sitting and "Yes" or "No")
+end)
+
+CA.MouseButton1Click:Connect(function()
+    local allInfo = IL.Text
+    setclipboard(allInfo)
+end)
+
+CG.MouseButton1Click:Connect(function()
+    local gameInfoText = string.format("🎮Game\nName: %s\nPlaceID: %d", game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name, game.PlaceId)
+    setclipboard(gameInfoText)
+end)
+
+CS.MouseButton1Click:Connect(function()
+    local playerCount = #game.Players:GetPlayers()
+    local ST = os.date("!*t", tick())
+    local formattedST = string.format("%02d:%02d:%02d", ST.hour, ST.min, ST.sec)
+    local serverInfo = string.format("💾Server\nPlayer Count: %d\nServer Time: %s", playerCount, formattedST)
+    setclipboard(serverInfo)
+end)
+
+CY.MouseButton1Click:Connect(function()
+    local P = game.Players.LocalPlayer
+    local H = P.Character and P.Character:FindFirstChildOfClass("Humanoid")
+    local WS = H and H.WalkSpeed or 16
+    local JP = H and H.JumpPower or 50
+    local FOV = workspace.CurrentCamera.FieldOfView or 70
+    local health = H and H.Health or 0
+    local maxHealth = H and H.MaxHealth or 0
+    local youInfo = string.format("👤You\nWalkspeed: %d\nJumppower: %d\nFOV: %d\nHealth: %d/%d", WS, JP, FOV, health, maxHealth)
+    setclipboard(youInfo)
+end)
 end,
 
 ["invisible"] = function()
@@ -1473,7 +1611,6 @@ end,
         end
     end
 
-    -- Áp dụng ESP cho bất kỳ người chơi mới nào tham gia
     game.Players.PlayerAdded:Connect(function(player)
         player.CharacterAdded:Connect(function()
             createESP(player)
@@ -1818,7 +1955,6 @@ end,
     mainFrame.BorderColor3 = Color3.fromRGB(80, 80, 80)
     mainFrame.Parent = screenGui
 
-    -- Create the Search Box
     local searchBox = Instance.new("TextBox")
     searchBox.Size = UDim2.new(1, -140, 0, 40)
     searchBox.Position = UDim2.new(0, 10, 0, 10)
@@ -2092,234 +2228,6 @@ local highlight = player.Character:FindFirstChildOfClass("Highlight")
 if highlight then
     highlight:Destroy()
 end
-end,
-
-["addtools2"] = function()
-local SG, F, CB, AB, NT, NTI, M, MD, SM, SMD, SE, SI, RS, RSBtn, MF, SMF, BBM, BBS =
-    Instance.new("ScreenGui"),
-    Instance.new("Frame"),
-    Instance.new("TextButton"),
-    Instance.new("TextButton"),
-    Instance.new("TextLabel"),
-    Instance.new("TextBox"),
-    Instance.new("TextLabel"),
-    Instance.new("TextButton"),
-    Instance.new("TextLabel"),
-    Instance.new("TextButton"),
-    Instance.new("TextLabel"),
-    Instance.new("TextBox"),
-    Instance.new("TextLabel"),
-    Instance.new("TextButton"),
-    Instance.new("Frame"),
-    Instance.new("Frame"),
-    Instance.new("TextButton"),
-    Instance.new("TextButton")
-
-SG.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-
-F.Parent = SG
-F.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-F.Position = UDim2.new(0.5, -150, 0.5, -100)
-F.Size = UDim2.new(0, 300, 0, 250)
-F.Active = true
-F.Draggable = true
-
-CB.Parent = F
-CB.Text = "Close"
-CB.Position = UDim2.new(1, -60, 0, 0)
-CB.Size = UDim2.new(0, 50, 0, 25)
-CB.MouseButton1Click:Connect(function()
-    SG:Destroy()
-end)
-
-AB.Parent = F
-AB.Text = "Apply"
-AB.Position = UDim2.new(0.5, -50, 1, -30)
-AB.Size = UDim2.new(0, 100, 0, 25)
-AB.MouseButton1Click:Connect(function()
-    local toolName, mechanism, scriptMechanism, customScript, resetOn = NTI.Text, MD.Text, SMD.Text, SI.Text, RSBtn.Text == "On"
-    local tool = Instance.new("Tool")
-    tool.Name = toolName
-    tool.RequiresHandle = false
-    tool.Parent = game.Players.LocalPlayer.Backpack
-
-    local function applyScript(scriptType)
-        if scriptType == "Die" then
-            game.Players.LocalPlayer.Character.Humanoid.Health = 0
-        elseif scriptType == "Lay" then
-            tool.Equipped:Connect(function()
-                game.Players.LocalPlayer.Character.Humanoid.Sit = true
-            end)
-        elseif scriptType == "sit" then
-            game.Players.LocalPlayer.Character.Humanoid.Sit = true
-        elseif scriptType == "Use Script editor" and customScript ~= "" then
-            loadstring(customScript)()
-        end
-    end
-
-    if mechanism == "When tool equipped" then
-        tool.Equipped:Connect(function()
-            applyScript(scriptMechanism)
-        end)
-    elseif mechanism == "When tool in inventory" then
-        tool.Parent = game.Players.LocalPlayer.Backpack
-        applyScript(scriptMechanism)
-    end
-
-    if resetOn then
-        game.Players.LocalPlayer.Character.Humanoid.Died:Connect(function()
-            SG:Destroy()
-        end)
-    end
-end)
-
-NT.Parent = F
-NT.Text = "Tool Name"
-NT.Position = UDim2.new(0, 10, 0, 10)
-NT.Size = UDim2.new(0, 100, 0, 25)
-
-NTI.Parent = F
-NTI.Position = UDim2.new(0, 110, 0, 10)
-NTI.Size = UDim2.new(0, 150, 0, 25)
-NTI.ClearTextOnFocus = true
-
-M.Parent = F
-M.Text = "Mechanism"
-M.Position = UDim2.new(0, 10, 0, 45)
-M.Size = UDim2.new(0, 100, 0, 25)
-
-MD.Parent = F
-MD.Text = "Select mechanism"
-MD.Position = UDim2.new(0, 110, 0, 45)
-MD.Size = UDim2.new(0, 150, 0, 25)
-MD.MouseButton1Click:Connect(function()
-    F.Visible = false
-    MF.Visible = true
-end)
-
-SM.Parent = F
-SM.Text = "Script Mechanism"
-SM.Position = UDim2.new(0, 10, 0, 80)
-SM.Size = UDim2.new(0, 100, 0, 25)
-
-SMD.Parent = F
-SMD.Text = "Select Script"
-SMD.Position = UDim2.new(0, 110, 0, 80)
-SMD.Size = UDim2.new(0, 150, 0, 25)
-SMD.MouseButton1Click:Connect(function()
-    F.Visible = false
-    SMF.Visible = true
-end)
-
-SE.Parent = F
-SE.Text = "Script Editor"
-SE.Position = UDim2.new(0, 10, 0, 115)
-SE.Size = UDim2.new(0, 100, 0, 25)
-
-SI.Parent = F
-SI.Position = UDim2.new(0, 110, 0, 115)
-SI.Size = UDim2.new(0, 150, 0, 25)
-SI.TextXAlignment = Enum.TextXAlignment.Left
-SI.TextYAlignment = Enum.TextYAlignment.Top
-SI.MultiLine = true
-SI.ClearTextOnFocus = true
-SI.TextWrapped = true
-SI.TextEditable = false
-
-RS.Parent = F
-RS.Text = "Reset will be lost?"
-RS.Position = UDim2.new(0, 10, 0, 150)
-RS.Size = UDim2.new(0, 130, 0, 25)
-
-RSBtn.Parent = F
-RSBtn.Text = "Off"
-RSBtn.Position = UDim2.new(0, 150, 0, 150)
-RSBtn.Size = UDim2.new(0, 50, 0, 25)
-RSBtn.MouseButton1Click:Connect(function()
-    if RSBtn.Text == "Off" then
-        RSBtn.Text = "On"
-    else
-        RSBtn.Text = "Off"
-    end
-end)
-
-SI.FocusLost:Connect(function()
-    if SI.Text ~= "" then
-        SI.TextEditable = true
-    end
-end)
-
-MF.Parent = SG
-MF.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-MF.Position = UDim2.new(0.5, -150, 0.5, -100)
-MF.Size = UDim2.new(0, 300, 0, 200)
-MF.Visible = false
-
-local mechanisms = {
-    "When tool equipped",
-    "When tool in inventory",
-    "No mechanism"
-}
-
-for i, mech in ipairs(mechanisms) do
-    local btn = Instance.new("TextButton", MF)
-    btn.Text = mech
-    btn.Size = UDim2.new(0, 200, 0, 25)
-    btn.Position = UDim2.new(0.5, -100, 0, 20 + (i - 1) * 35)
-    btn.MouseButton1Click:Connect(function()
-        MD.Text = mech
-        MF.Visible = false
-        F.Visible = true
-    end)
-end
-
-BBM.Parent = MF
-BBM.Text = "Back"
-BBM.Size = UDim2.new(0, 50, 0, 25)
-BBM.Position = UDim2.new(1, -60, 0, 0)
-BBM.MouseButton1Click:Connect(function()
-    MF.Visible = false
-    F.Visible = true
-end)
-
-SMF.Parent = SG
-SMF.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-SMF.Position = UDim2.new(0.5, -150, 0.5, -100)
-SMF.Size = UDim2.new(0, 300, 0, 200)
-SMF.Visible = false
-
-local scripts = {
-    "Die",
-    "Lay",
-    "sit",
-    "Use Script editor"
-}
-
-for i, script in ipairs(scripts) do
-    local btn = Instance.new("TextButton", SMF)
-    btn.Text = script
-    btn.Size = UDim2.new(0, 200, 0, 25)
-    btn.Position = UDim2.new(0.5, -100, 0, 20 + (i - 1) * 35)
-    btn.MouseButton1Click:Connect(function()
-        SMD.Text = script
-        if script == "Use Script editor" then
-            SI.TextEditable = true
-        else
-            SI.TextEditable = false
-        end
-        SMF.Visible = false
-        F.Visible = true
-    end)
-end
-
-BBS.Parent = SMF
-BBS.Text = "Back"
-BBS.Size = UDim2.new(0, 50, 0, 25)
-BBS.Position = UDim2.new(1, -60, 0, 0)
-BBS.MouseButton1Click:Connect(function()
-    SMF.Visible = false
-    F.Visible = true
-end)
 end,
 
 ["restoreroot"] = function()
@@ -2659,7 +2567,6 @@ languageButton.MouseButton1Click:Connect(function()
     updateLanguage()
 end)
 
--- Function to unanchor all parts in the game world
 local function unanchorAllParts()
     for _, object in pairs(workspace:GetDescendants()) do
         if object:IsA("BasePart") then
@@ -2668,7 +2575,6 @@ local function unanchorAllParts()
     end
 end
 
--- Connect button actions
 yesButton.MouseButton1Click:Connect(function()
     unanchorAllParts()
     screenGui:Destroy()
@@ -2871,7 +2777,6 @@ game:GetService("UserInputService").InputChanged:Connect(function(input)
     end
 end)
 
--- Hàm để sit và unsit nhân vật
 local function toggleSit()
     if isSitting then
         humanoid.Sit = false -- Unsit
@@ -2938,7 +2843,6 @@ game:GetService("UserInputService").InputChanged:Connect(function(input)
     end
 end)
 
--- Hàm để chuyển đổi giữa Day và Night
 local function toggleDayNight()
     if isDay then
         lighting.TimeOfDay = "00:00:00" -- Đặt về đêm (midnight)
@@ -2950,7 +2854,6 @@ local function toggleDayNight()
     isDay = not isDay
 end
 
--- Khi bấm nút thì chuyển đổi giữa Day/Night
 DraggableButton.MouseButton1Click:Connect(toggleDayNight)
 end,
 
@@ -3009,7 +2912,6 @@ UserInputService.InputChanged:Connect(function(input)
     end
 end)
 
--- Hàm để chuyển đổi giữa Freecam và chế độ camera gốc
 local function toggleFreecam()
     if freecamEnabled then
         -- Về chế độ camera gốc
@@ -3024,7 +2926,6 @@ local function toggleFreecam()
     freecamEnabled = not freecamEnabled
 end
 
--- Khi bấm nút thì chuyển đổi giữa Freecam và chế độ camera gốc
 DraggableButton.MouseButton1Click:Connect(toggleFreecam)
 end,
 
