@@ -1332,7 +1332,6 @@ end,
     cam.CameraType = Enum.CameraType.Custom
 end,
 
--- Lệnh Freecam2
 ["freecam2"] = function()
     local cam = workspace.CurrentCamera
     local UIS = game:GetService("UserInputService")
@@ -3797,6 +3796,10 @@ end,
 
 ["walkonwall"] = function()
 loadstring(game:HttpGet("https://pastebin.com/raw/zXk4Rq2r"))()
+end,
+
+["keyboard"] = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/advxzivhsjjdhxhsidifvsh/mobkeyboard/main/main.txt", true))()
 end,
 }
 
