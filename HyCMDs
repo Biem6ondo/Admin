@@ -3801,6 +3801,264 @@ end,
 ["keyboard"] = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/advxzivhsjjdhxhsidifvsh/mobkeyboard/main/main.txt", true))()
 end,
+
+["calculator"] = function()
+local TweenService = game:GetService("TweenService")
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.ResetOnSpawn = false
+
+local Frame = Instance.new("Frame")
+Frame.Size = UDim2.new(0, 300, 0, 500)
+Frame.Position = UDim2.new(0.5, 0, 1.5, 0) -- Bắt đầu ở ngoài màn hình (phía dưới)
+Frame.AnchorPoint = Vector2.new(0.5, 0.5)
+Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Frame.Parent = ScreenGui
+
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 15)
+UICorner.Parent = Frame
+
+local CloseButton = Instance.new("TextButton")
+CloseButton.Text = "Close"
+CloseButton.Size = UDim2.new(0, 50, 0, 50)
+CloseButton.Position = UDim2.new(1, -60, 0, 10)
+CloseButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+CloseButton.Parent = Frame
+
+local UICornerCloseButton = Instance.new("UICorner")
+UICornerCloseButton.CornerRadius = UDim.new(0, 10)
+UICornerCloseButton.Parent = CloseButton
+
+local Title = Instance.new("TextLabel")
+Title.Text = "CASIO"
+Title.Size = UDim2.new(0, 100, 0, 50)
+Title.Position = UDim2.new(0.5, -150, 0, 10)
+Title.BackgroundTransparency = 1
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.Font = Enum.Font.SourceSansBold
+Title.TextSize = 24
+Title.Parent = Frame
+
+local EqualsButton = Instance.new("TextButton")
+EqualsButton.Text = "="
+EqualsButton.Size = UDim2.new(0, 50, 0, 50)
+EqualsButton.Position = UDim2.new(0.5, -25, 0.9, -25)
+EqualsButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+EqualsButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+EqualsButton.Parent = Frame
+
+local UICornerEqualsButton = Instance.new("UICorner")
+UICornerEqualsButton.CornerRadius = UDim.new(0, 10)
+UICornerEqualsButton.Parent = EqualsButton
+
+local TB = Instance.new("TextBox")
+TB.Size = UDim2.new(0, 280, 0, 50)
+TB.Position = UDim2.new(0.5, -140, 0.125, 0.5)
+TB.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+TB.TextColor3 = Color3.fromRGB(255, 255, 255)
+TB.Text = ""
+TB.Parent = Frame
+
+local UICornerTB = Instance.new("UICorner")
+UICornerTB.CornerRadius = UDim.new(0, 10)
+UICornerTB.Parent = TB
+
+local buttons = {
+    {"1", "2", "3", "+"},
+    {"4", "5", "6", "-"},
+    {"7", "8", "9", "*"},
+    {"0", "/", "Del", "AC"},
+    {"^", "π", "!", "%"}
+}
+
+for i, row in ipairs(buttons) do
+    for j, char in ipairs(row) do
+        local button = Instance.new("TextButton")
+        button.Text = char
+        button.Size = UDim2.new(0, 50, 0, 50)
+        button.Position = UDim2.new(0, (j-0.5) * 60, 0, 100 + (i-0.75) * 60)
+        button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+        button.TextColor3 = Color3.fromRGB(255, 255, 255)
+        button.Parent = Frame
+
+        local UICornerButton = Instance.new("UICorner")
+        UICornerButton.CornerRadius = UDim.new(0, 10)
+        UICornerButton.Parent = button
+
+        button.MouseButton1Click:Connect(function()
+            if char == "Del" then
+                TB.Text = TB.Text:sub(1, -2)
+            elseif char == "AC" then
+                TB.Text = ""
+            elseif char == "^" then
+                TB.Text = TB.Text .. "^"
+            elseif char == "π" then
+                TB.Text = TB.Text .. tostring(math.pi)
+            elseif char == "!" then
+                local num = tonumber(TB.Text)
+                if num then
+                    local fact = 1
+                    for k = 2, num do fact = fact * k end
+                    TB.Text = tostring(fact)
+                else
+                    TB.Text = "Error"
+                end
+            elseif char == "%" then
+                TB.Text = TB.Text .. "/100"
+            else
+                TB.Text = TB.Text .. char
+            end
+        end)
+    end
+end
+
+local function flyIn()
+    local tweenInfo = TweenInfo.new(1, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+    local goal = {Position = UDim2.new(0.5, 0, 0.5, 0)} -- Bay lên vị trí giữa màn hình
+    local tween = TweenService:Create(Frame, tweenInfo, goal)
+    tween:Play()
+end
+
+local function fallOut()
+    local tweenInfo = TweenInfo.new(1, Enum.EasingStyle.Sine, Enum.EasingDirection.In)
+    local goal = {Position = UDim2.new(0.5, 0, 1.5, 0)} -- Rơi xuống dưới màn hình
+    local tween = TweenService:Create(Frame, tweenInfo, goal)
+    tween:Play()
+    tween.Completed:Connect(function()
+        ScreenGui:Destroy()
+    end)
+end
+
+CloseButton.MouseButton1Click:Connect(function()
+    fallOut() -- Gọi hiệu ứng rơi xuống khi bấm Close
+end)
+
+EqualsButton.MouseButton1Click:Connect(function()
+    local expression = TB.Text:gsub("%^", "**")
+    local success, result = pcall(loadstring("return " .. expression))
+    if success then
+        TB.Text = tostring(result)
+    else
+        TB.Text = "Error"
+    end
+end)
+
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+flyIn() -- Gọi hiệu ứng bay lên khi script được thực thi
+end,
+["minicalculator"] = function()
+local TweenService = game:GetService("TweenService")
+local SG = Instance.new("ScreenGui")
+SG.ResetOnSpawn = false
+local F = Instance.new("Frame")
+F.Size = UDim2.new(0, 200, 0, 300)
+F.Position = UDim2.new(0.5, 0, 1.5, 0)
+F.AnchorPoint = Vector2.new(0.5, 0.5)
+F.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+F.Parent = SG
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 10)
+UICorner.Parent = F
+local CB = Instance.new("TextButton")
+CB.Text = "Close"
+CB.Size = UDim2.new(0, 40, 0, 40)
+CB.Position = UDim2.new(1, -50, 0, 5)
+CB.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+CB.TextColor3 = Color3.fromRGB(255, 255, 255)
+CB.Parent = F
+local UICornerCB = Instance.new("UICorner")
+UICornerCB.CornerRadius = UDim.new(0, 8)
+UICornerCB.Parent = CB
+local Title = Instance.new("TextLabel")
+Title.Text = "CASIO"
+Title.Size = UDim2.new(0, 80, 0, 30)
+Title.Position = UDim2.new(0.5, -40, 0, 5)
+Title.BackgroundTransparency = 1
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.Font = Enum.Font.SourceSansBold
+Title.TextSize = 20
+Title.Parent = F
+local EB = Instance.new("TextButton")
+EB.Text = "="
+EB.Size = UDim2.new(0, 40, 0, 40)
+EB.Position = UDim2.new(0.5, -20, 0.85, -20)
+EB.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+EB.TextColor3 = Color3.fromRGB(255, 255, 255)
+EB.Parent = F
+local UICornerEB = Instance.new("UICorner")
+UICornerEB.CornerRadius = UDim.new(0, 8)
+UICornerEB.Parent = EB
+local TB = Instance.new("TextBox")
+TB.Size = UDim2.new(0, 180, 0, 30)
+TB.Position = UDim2.new(0.5, -90, 0.125, 0.5)
+TB.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+TB.TextColor3 = Color3.fromRGB(255, 255, 255)
+TB.Text = ""
+TB.Parent = F
+local UICornerTB = Instance.new("UICorner")
+UICornerTB.CornerRadius = UDim.new(0, 8)
+UICornerTB.Parent = TB
+local buttons = {
+    {"1", "2", "3", "+"},
+    {"4", "5", "6", "-"},
+    {"7", "8", "9", "*"},
+    {"0", "/", "Del", "AC"}
+}
+for i, row in ipairs(buttons) do
+    for j, char in ipairs(row) do
+        local button = Instance.new("TextButton")
+        button.Text = char
+        button.Size = UDim2.new(0, 40, 0, 40)
+        button.Position = UDim2.new(0, (j-1) * 50, 0, 60 + (i-1) * 50)
+        button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+        button.TextColor3 = Color3.fromRGB(255, 255, 255)
+        button.Parent = F
+        local UICornerButton = Instance.new("UICorner")
+        UICornerButton.CornerRadius = UDim.new(0, 8)
+        UICornerButton.Parent = button
+        button.MouseButton1Click:Connect(function()
+            if char == "Del" then
+                TB.Text = TB.Text:sub(1, -2)
+            elseif char == "AC" then
+                TB.Text = ""
+            else
+                TB.Text = TB.Text .. char
+            end
+        end)
+    end
+end
+local function flyIn()
+    local tweenInfo = TweenInfo.new(1, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+    local goal = {Position = UDim2.new(0.5, 0, 0.5, 0)}
+    local tween = TweenService:Create(F, tweenInfo, goal)
+    tween:Play()
+end
+local function fallOut()
+    local tweenInfo = TweenInfo.new(1, Enum.EasingStyle.Sine, Enum.EasingDirection.In)
+    local goal = {Position = UDim2.new(0.5, 0, 1.5, 0)}
+    local tween = TweenService:Create(F, tweenInfo, goal)
+    tween:Play()
+    tween.Completed:Connect(function()
+        SG:Destroy()
+    end)
+end
+CB.MouseButton1Click:Connect(function()
+    fallOut()
+end)
+EB.MouseButton1Click:Connect(function()
+    local expression = TB.Text:gsub("%^", "**")
+    local success, result = pcall(loadstring("return " .. expression))
+    if success then
+        TB.Text = tostring(result)
+    else
+        TB.Text = "Error"
+    end
+end)
+SG.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+flyIn()
+end,
 }
 
 -- End Command!
