@@ -2148,37 +2148,31 @@ local function makeFat()
     end
 end
 
--- Gọi hàm để làm nhân vật mập ra
 makeFat()
 end,
 
 ["loopbring"] = function()
--- Script 1: Dịch chuyển tất cả người chơi đến bạn liên tục và thêm ánh sáng (ESP) vào bạn
 local player = game.Players.LocalPlayer
 local runService = game:GetService("RunService")
 
--- Biến lưu trữ kết nối để có thể hủy bỏ sau này
 local teleportConnection
 
--- Tạo phần tử ESP (ánh sáng) cho người chơi
 local function addESP(character)
     local highlight = Instance.new("Highlight")
     highlight.Adornee = character
-    highlight.FillColor = Color3.fromRGB(255, 0, 0) -- Màu đỏ cho ESP
-    highlight.FillTransparency = 0.5 -- Độ trong suốt của ESP
-    highlight.OutlineColor = Color3.fromRGB(255, 0, 0) -- Màu viền của ESP
-    highlight.OutlineTransparency = 0.5 -- Độ trong suốt của viền
+    highlight.FillColor = Color3.fromRGB(255, 0, 0)
+    highlight.FillTransparency = 0.5
+    highlight.OutlineColor = Color3.fromRGB(255, 0, 0)
+    highlight.OutlineTransparency = 0.5
     highlight.Parent = character
 end
 
--- Tạo ESP cho chính người chơi
 local character = player.Character or player.CharacterAdded:Wait()
 addESP(character)
 
 teleportConnection = runService.RenderStepped:Connect(function()
     local position = character.HumanoidRootPart.Position
 
-    -- Không va chạm giữa các nhân vật
     for _, otherPlayer in pairs(game.Players:GetPlayers()) do
         if otherPlayer ~= player then
             local otherCharacter = otherPlayer.Character
@@ -2188,26 +2182,22 @@ teleportConnection = runService.RenderStepped:Connect(function()
                         part.CanCollide = false
                     end
                 end
-                -- Dịch chuyển đến vị trí của bạn
                 otherCharacter:SetPrimaryPartCFrame(CFrame.new(position))
             end
         end
     end
 end)
 
--- Biến này giúp Script 2 có thể ngắt kết nối dễ dàng
 _G.teleportConnection = teleportConnection
 end,
 
 ["unloopbring"] = function()
 -- Script 2: Hủy bỏ việc dịch chuyển và xóa ESP
 if _G.teleportConnection then
-    -- Ngắt kết nối để ngừng dịch chuyển
     _G.teleportConnection:Disconnect()
     _G.teleportConnection = nil
 end
 
--- Khôi phục va chạm giữa các nhân vật
 local player = game.Players.LocalPlayer
 for _, otherPlayer in pairs(game.Players:GetPlayers()) do
     if otherPlayer ~= player then
@@ -2232,10 +2222,8 @@ end,
 local function restoreRootPart(character)
     if not character then return end
     
-    -- Kiểm tra xem nhân vật có RootPart không
     local rootPart = character:FindFirstChild("HumanoidRootPart")
     
-    -- Nếu không có, tạo lại RootPart
     if not rootPart then
         rootPart = Instance.new("Part")
         rootPart.Name = "HumanoidRootPart"
@@ -2245,17 +2233,14 @@ local function restoreRootPart(character)
         rootPart.Transparency = 1
         rootPart.Parent = character
         
-        -- Tìm phần thân chính của nhân vật (Torso hoặc UpperTorso)
         local torso = character:FindFirstChild("Torso") or character:FindFirstChild("UpperTorso")
         
-        -- Đảm bảo phần thân chính có tồn tại
         if torso then
             rootPart.CFrame = torso.CFrame -- Đặt RootPart ở vị trí của Torso
         else
             rootPart.CFrame = CFrame.new(0, 50, 0) -- Đặt RootPart ở vị trí cao (tránh xuyên qua Void)
         end
-        
-        -- Gắn RootPart vào thân chính
+
         local weld = Instance.new("WeldConstraint")
         weld.Part0 = torso
         weld.Part1 = rootPart
@@ -2263,327 +2248,15 @@ local function restoreRootPart(character)
     end
 end
 
--- Sử dụng hàm này khi cần thiết
 game.Players.PlayerAdded:Connect(function(player)
     player.CharacterAdded:Connect(function(character)
         restoreRootPart(character)
     end)
 end)
 
--- Để sử dụng cho nhân vật hiện tại
 if game.Players.LocalPlayer.Character then
     restoreRootPart(game.Players.LocalPlayer.Character)
 end
-end,
-
-["allpartisunanchored"] = function()
--- Create the main GUI
-local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "MyGUI"
-screenGui.Parent = game.Players.LocalPlayer.PlayerGui
-
--- Create the main frame
-local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0.5, 0, 0.5, 0)
-frame.Position = UDim2.new(0.25, 0, 0.25, 0)
-frame.BackgroundColor3 = Color3.new(0, 0, 0)
-frame.Parent = screenGui
-
--- Create the title and close button
-local titleFrame = Instance.new("Frame")
-titleFrame.Size = UDim2.new(1, 0, 0.1, 0)
-titleFrame.Position = UDim2.new(0, 0, -0.05, 0)  -- Adjusted position to move it higher
-titleFrame.BackgroundColor3 = Color3.new(0, 0, 0)
-titleFrame.Parent = frame
-
-local titleLabel = Instance.new("TextLabel")
-titleLabel.Size = UDim2.new(1, 0, 1, 0)
-titleLabel.Text = "Warning"
-titleLabel.TextColor3 = Color3.new(1, 1, 1)
-titleLabel.BackgroundTransparency = 1
-titleLabel.TextScaled = true
-titleLabel.TextStrokeTransparency = 0.8
-titleLabel.Parent = titleFrame
-
-local closeButton = Instance.new("TextButton")
-closeButton.Size = UDim2.new(0.1, 0, 1, 0)
-closeButton.Position = UDim2.new(1, -50, 0, 0)
-closeButton.Text = "X"
-closeButton.TextColor3 = Color3.new(1, 0, 0)
-closeButton.BackgroundColor3 = Color3.new(0, 0, 0)
-closeButton.Parent = titleFrame
-
-closeButton.MouseButton1Click:Connect(function()
-    screenGui:Destroy()
-end)
-
--- Create the scrollable content area
-local scrollFrame = Instance.new("ScrollingFrame")
-scrollFrame.Size = UDim2.new(1, 0, 0.65, 0)
-scrollFrame.Position = UDim2.new(0, 0, 0.05, 0)
-scrollFrame.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
-scrollFrame.BorderSizePixel = 0
-scrollFrame.Parent = frame
-
-local content = Instance.new("TextLabel")
-content.Size = UDim2.new(1, 0, 1, 0)
-content.Position = UDim2.new(0, 0, 0, 0)
-content.Text = "⚠️ **Warning:** This action will unanchor all parts in the world. Proceed with caution.\n\n**Details:**\n- This action will affect all parts in the workspace.\n- Unanchoring parts may cause instability or unexpected behavior in your game.\n\nAre you sure you want to proceed?"
-content.TextColor3 = Color3.new(1, 1, 1)
-content.BackgroundTransparency = 1
-content.TextSize = 18
-content.TextWrapped = true
-content.TextStrokeTransparency = 0.5
-content.Parent = scrollFrame
-
--- Create the Yes and No buttons
-local buttonFrame = Instance.new("Frame")
-buttonFrame.Size = UDim2.new(1, 0, 0.2, 0)
-buttonFrame.Position = UDim2.new(0, 0, 0.75, 0)
-buttonFrame.BackgroundColor3 = Color3.new(0, 0, 0)
-buttonFrame.Parent = frame
-
-local yesButton = Instance.new("TextButton")
-yesButton.Size = UDim2.new(0.4, 0, 0.8, 0)
-yesButton.Position = UDim2.new(0.1, 0, 0.1, 0)
-yesButton.Text = "Yes"
-yesButton.TextColor3 = Color3.new(1, 1, 1)
-yesButton.BackgroundColor3 = Color3.new(0, 0.5, 0)
-yesButton.TextSize = 18
-yesButton.TextStrokeTransparency = 0.5
-yesButton.Parent = buttonFrame
-
-local noButton = Instance.new("TextButton")
-noButton.Size = UDim2.new(0.4, 0, 0.8, 0)
-noButton.Position = UDim2.new(0.5, 0, 0.1, 0)
-noButton.Text = "No"
-noButton.TextColor3 = Color3.new(1, 1, 1)
-noButton.BackgroundColor3 = Color3.new(0.5, 0, 0)
-noButton.TextSize = 18
-noButton.TextStrokeTransparency = 0.5
-noButton.Parent = buttonFrame
-
--- Create the language selection button
-local languageFrame = Instance.new("Frame")
-languageFrame.Size = UDim2.new(1, 0, 0.1, 0)
-languageFrame.Position = UDim2.new(0, 0, 0.9, 0)
-languageFrame.BackgroundColor3 = Color3.new(0, 0, 0)
-languageFrame.Parent = frame
-
-local languageLabel = Instance.new("TextLabel")
-languageLabel.Size = UDim2.new(0.8, 0, 1, 0)
-languageLabel.Text = "Language"
-languageLabel.TextColor3 = Color3.new(1, 1, 1)
-languageLabel.BackgroundTransparency = 1
-languageLabel.TextSize = 18
-languageLabel.Parent = languageFrame
-
-local languageButton = Instance.new("TextButton")
-languageButton.Size = UDim2.new(0.2, 0, 1, 0)
-languageButton.Position = UDim2.new(0.8, 0, 0, 0)
-languageButton.Text = "Change"
-languageButton.TextColor3 = Color3.new(1, 1, 1)
-languageButton.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
-languageButton.TextSize = 18
-languageButton.Parent = languageFrame
-
--- Language options
-local languages = {
-    ["VI"] = "⚠️ **Cảnh báo:** Hành động này sẽ làm tất cả các phần trong thế giới không còn được gắn chặt. Tiến hành với sự thận trọng.\n\n**Chi tiết:**\n- Hành động này sẽ ảnh hưởng đến tất cả các phần trong workspace.\n- Việc bỏ gắn chặt các phần có thể gây ra sự không ổn định hoặc hành vi không mong muốn trong trò chơi của bạn.\n\nBạn có chắc chắn muốn tiếp tục?",
-    ["RU"] = "⚠️ **Внимание:** Это действие сделает все детали в мире не закрепленными. Пожалуйста, действуйте осторожно.\n\n**Подробности:**\n- Это действие затронет все детали в рабочем пространстве.\n- Снятие фиксации деталей может привести к нестабильности или неожиданному поведению в вашей игре.\n\nВы уверены, что хотите продолжить?",
-    ["EN"] = "⚠️ **Warning:** This action will unanchor all parts in the world. Proceed with caution.\n\n**Details:**\n- This action will affect all parts in the workspace.\n- Unanchoring parts may cause instability or unexpected behavior in your game.\n\nAre you sure you want to proceed?",
-    ["SP"] = "⚠️ **Advertencia:** Esta acción desanclará todas las partes en el mundo. Proceda con precaución.\n\n**Detalles:**\n- Esta acción afectará a todas las partes en el espacio de trabajo.\n- Desanclar partes puede causar inestabilidad o comportamientos inesperados en tu juego.\n\n¿Estás seguro de que deseas continuar?"
-}
-
-local currentLanguage = "EN"
-
-local function updateLanguage()
-    content.Text = languages[currentLanguage]
-end
-
-languageButton.MouseButton1Click:Connect(function()
-    local languageOptions = {"VI", "RU", "EN", "SP"}
-    local currentIndex = table.find(languageOptions, currentLanguage)
-    currentIndex = (currentIndex % #languageOptions) + 1
-    currentLanguage = languageOptions[currentIndex]
-    updateLanguage()
-end)
-
--- Function to unanchor all parts in the game world
-local function unanchorAllParts()
-    for _, object in pairs(workspace:GetDescendants()) do
-        if object:IsA("BasePart") then
-            object.Anchored = false
-        end
-    end
-end
-
--- Connect button actions
-yesButton.MouseButton1Click:Connect(function()
-    unanchorAllParts()
-    screenGui:Destroy()
-end)
-
-noButton.MouseButton1Click:Connect(function()
-    screenGui:Destroy()
-end)
-
--- Initialize the language
-updateLanguage()
-end,
-
-["apiud"] = function()
--- Create the main GUI
-local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "MyGUI"
-screenGui.Parent = game.Players.LocalPlayer.PlayerGui
-
--- Create the main frame
-local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0.5, 0, 0.5, 0)
-frame.Position = UDim2.new(0.25, 0, 0.25, 0)
-frame.BackgroundColor3 = Color3.new(0, 0, 0)
-frame.Parent = screenGui
-
--- Create the title and close button
-local titleFrame = Instance.new("Frame")
-titleFrame.Size = UDim2.new(1, 0, 0.1, 0)
-titleFrame.Position = UDim2.new(0, 0, -0.05, 0)  -- Adjusted position to move it higher
-titleFrame.BackgroundColor3 = Color3.new(0, 0, 0)
-titleFrame.Parent = frame
-
-local titleLabel = Instance.new("TextLabel")
-titleLabel.Size = UDim2.new(1, 0, 1, 0)
-titleLabel.Text = "Warning"
-titleLabel.TextColor3 = Color3.new(1, 1, 1)
-titleLabel.BackgroundTransparency = 1
-titleLabel.TextScaled = true
-titleLabel.TextStrokeTransparency = 0.8
-titleLabel.Parent = titleFrame
-
-local closeButton = Instance.new("TextButton")
-closeButton.Size = UDim2.new(0.1, 0, 1, 0)
-closeButton.Position = UDim2.new(1, -50, 0, 0)
-closeButton.Text = "X"
-closeButton.TextColor3 = Color3.new(1, 0, 0)
-closeButton.BackgroundColor3 = Color3.new(0, 0, 0)
-closeButton.Parent = titleFrame
-
-closeButton.MouseButton1Click:Connect(function()
-    screenGui:Destroy()
-end)
-
--- Create the scrollable content area
-local scrollFrame = Instance.new("ScrollingFrame")
-scrollFrame.Size = UDim2.new(1, 0, 0.65, 0)
-scrollFrame.Position = UDim2.new(0, 0, 0.05, 0)
-scrollFrame.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
-scrollFrame.BorderSizePixel = 0
-scrollFrame.Parent = frame
-
-local content = Instance.new("TextLabel")
-content.Size = UDim2.new(1, 0, 1, 0)
-content.Position = UDim2.new(0, 0, 0, 0)
-content.Text = "⚠️ **Warning:** This action will unanchor all parts in the world. Proceed with caution.\n\n**Details:**\n- This action will affect all parts in the workspace.\n- Unanchoring parts may cause instability or unexpected behavior in your game.\n\nAre you sure you want to proceed?"
-content.TextColor3 = Color3.new(1, 1, 1)
-content.BackgroundTransparency = 1
-content.TextSize = 18
-content.TextWrapped = true
-content.TextStrokeTransparency = 0.5
-content.Parent = scrollFrame
-
--- Create the Yes and No buttons
-local buttonFrame = Instance.new("Frame")
-buttonFrame.Size = UDim2.new(1, 0, 0.2, 0)
-buttonFrame.Position = UDim2.new(0, 0, 0.75, 0)
-buttonFrame.BackgroundColor3 = Color3.new(0, 0, 0)
-buttonFrame.Parent = frame
-
-local yesButton = Instance.new("TextButton")
-yesButton.Size = UDim2.new(0.4, 0, 0.8, 0)
-yesButton.Position = UDim2.new(0.1, 0, 0.1, 0)
-yesButton.Text = "Yes"
-yesButton.TextColor3 = Color3.new(1, 1, 1)
-yesButton.BackgroundColor3 = Color3.new(0, 0.5, 0)
-yesButton.TextSize = 18
-yesButton.TextStrokeTransparency = 0.5
-yesButton.Parent = buttonFrame
-
-local noButton = Instance.new("TextButton")
-noButton.Size = UDim2.new(0.4, 0, 0.8, 0)
-noButton.Position = UDim2.new(0.5, 0, 0.1, 0)
-noButton.Text = "No"
-noButton.TextColor3 = Color3.new(1, 1, 1)
-noButton.BackgroundColor3 = Color3.new(0.5, 0, 0)
-noButton.TextSize = 18
-noButton.TextStrokeTransparency = 0.5
-noButton.Parent = buttonFrame
-
--- Create the language selection button
-local languageFrame = Instance.new("Frame")
-languageFrame.Size = UDim2.new(1, 0, 0.1, 0)
-languageFrame.Position = UDim2.new(0, 0, 0.9, 0)
-languageFrame.BackgroundColor3 = Color3.new(0, 0, 0)
-languageFrame.Parent = frame
-
-local languageLabel = Instance.new("TextLabel")
-languageLabel.Size = UDim2.new(0.8, 0, 1, 0)
-languageLabel.Text = "Language"
-languageLabel.TextColor3 = Color3.new(1, 1, 1)
-languageLabel.BackgroundTransparency = 1
-languageLabel.TextSize = 18
-languageLabel.Parent = languageFrame
-
-local languageButton = Instance.new("TextButton")
-languageButton.Size = UDim2.new(0.2, 0, 1, 0)
-languageButton.Position = UDim2.new(0.8, 0, 0, 0)
-languageButton.Text = "Change"
-languageButton.TextColor3 = Color3.new(1, 1, 1)
-languageButton.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
-languageButton.TextSize = 18
-languageButton.Parent = languageFrame
-
--- Language options
-local languages = {
-    ["VI"] = "⚠️ **Cảnh báo:** Hành động này sẽ làm tất cả các phần trong thế giới không còn được gắn chặt. Tiến hành với sự thận trọng.\n\n**Chi tiết:**\n- Hành động này sẽ ảnh hưởng đến tất cả các phần trong workspace.\n- Việc bỏ gắn chặt các phần có thể gây ra sự không ổn định hoặc hành vi không mong muốn trong trò chơi của bạn.\n\nBạn có chắc chắn muốn tiếp tục?",
-    ["RU"] = "⚠️ **Внимание:** Это действие сделает все детали в мире не закрепленными. Пожалуйста, действуйте осторожно.\n\n**Подробности:**\n- Это действие затронет все детали в рабочем пространстве.\n- Снятие фиксации деталей может привести к нестабильности или неожиданному поведению в вашей игре.\n\nВы уверены, что хотите продолжить?",
-    ["EN"] = "⚠️ **Warning:** This action will unanchor all parts in the world. Proceed with caution.\n\n**Details:**\n- This action will affect all parts in the workspace.\n- Unanchoring parts may cause instability or unexpected behavior in your game.\n\nAre you sure you want to proceed?",
-    ["SP"] = "⚠️ **Advertencia:** Esta acción desanclará todas las partes en el mundo. Proceda con precaución.\n\n**Detalles:**\n- Esta acción afectará a todas las partes en el espacio de trabajo.\n- Desanclar partes puede causar inestabilidad o comportamientos inesperados en tu juego.\n\n¿Estás seguro de que deseas continuar?"
-}
-
-local currentLanguage = "EN"
-
-local function updateLanguage()
-    content.Text = languages[currentLanguage]
-end
-
-languageButton.MouseButton1Click:Connect(function()
-    local languageOptions = {"VI", "RU", "EN", "SP"}
-    local currentIndex = table.find(languageOptions, currentLanguage)
-    currentIndex = (currentIndex % #languageOptions) + 1
-    currentLanguage = languageOptions[currentIndex]
-    updateLanguage()
-end)
-
-local function unanchorAllParts()
-    for _, object in pairs(workspace:GetDescendants()) do
-        if object:IsA("BasePart") then
-            object.Anchored = false
-        end
-    end
-end
-
-yesButton.MouseButton1Click:Connect(function()
-    unanchorAllParts()
-    screenGui:Destroy()
-end)
-
-noButton.MouseButton1Click:Connect(function()
-    screenGui:Destroy()
-end)
-
--- Initialize the language
-updateLanguage()
 end,
 
 ["button#freeze"] = function()
