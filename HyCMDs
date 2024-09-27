@@ -2410,6 +2410,12 @@ UserInputService.InputChanged:Connect(function(input)
     end
 end)
 
+local function onCharacterAdded(newCharacter)
+    character = newCharacter
+end
+
+player.CharacterAdded:Connect(onCharacterAdded)
+
 local function toggleFreeze()
     if freezeEnabled then
         for _, part in pairs(frozenParts) do
