@@ -1157,7 +1157,7 @@ end,
             part.CanCollide = true
         end
     end
-    print("Tất cả các part không va chạm đã được chuyển sang va chạm.")
+    print("...")
 end,
 
 ["apiuc"] = function()
@@ -1166,7 +1166,7 @@ end,
             part.CanCollide = true
         end
     end
-    print("Tất cả các part không va chạm đã được chuyển sang va chạm.")
+    print("...")
 end,
 
 ["uninvisiblepart"] = function()
@@ -1175,7 +1175,7 @@ end,
             part.Transparency = 0
         end
     end
-    print("Tất cả các part đã được phục hồi hiển thị.")
+    print("Restored.")
 end,
 
 ["uninvpart"] = function()
@@ -1184,7 +1184,7 @@ end,
             part.Transparency = 0
         end
     end
-    print("Tất cả các part đã được phục hồi hiển thị.")
+    print("Restored.")
 end,
 
 ["invisiblepart"] = function()
@@ -1193,7 +1193,7 @@ end,
             part.Transparency = 1
         end
     end
-    print("Tất cả các part đã được làm tàng hình.")
+    print("All part is invisiblr.")
 end,
 
 ["invpart"] = function()
@@ -1202,7 +1202,7 @@ end,
             part.Transparency = 1
         end
     end
-    print("Tất cả các part đã được làm tàng hình.")
+    print("All part is invisible!.")
 end,
 
 ["addtools"] = function(name_carryable_display_color)
@@ -1218,14 +1218,12 @@ end,
         local displayPart = split[3] == "True"
         local color = split[4]
 
-        -- Create the new tool
         local tool = Instance.new("Tool")
         tool.Name = toolName
         tool.RequiresHandle = carryable
         tool.CanBeDropped = carryable
         tool.Parent = backpack
 
-        -- Optionally create the display part
         if displayPart then
             local handle = Instance.new("Part")
             handle.Size = Vector3.new(1, 1, 1)
@@ -1235,9 +1233,9 @@ end,
             tool.GripPos = Vector3.new(0, -0.5, 0)
         end
 
-        print("Đã tạo công cụ mới: " .. toolName)
+        print("Created tool: " .. toolName)
     else
-        print("Không tìm thấy ba lô của người chơi.")
+        print("Can't find inventory.")
     end
 end,
 
@@ -1267,14 +1265,13 @@ end,
                     tool:Clone().Parent = backpack
                 end
             end
-            print("Đã sao chép tất cả công cụ từ " .. targetPlayer.Name .. ".")
+            print("Copy " .. targetPlayer.Name .. ".")
         end
     else
-        print("Không tìm thấy người chơi với tên hoặc tên hiển thị gần đúng là '" .. target .. "'.")
+        print("Can't find '" .. target .. "'.")
     end
 end,
 
--- Lệnh Goto
 ["goto"] = function(targetPlayer)
     local localPlayer = game.Players.LocalPlayer
     local target = getPlayer(targetPlayer)
@@ -1283,7 +1280,6 @@ end,
     end
 end,
 
--- Lệnh AutoMissed
 ["automissed"] = function()
     local localPlayer = game.Players.LocalPlayer
     if not _G.autoMissedConnection then
@@ -1301,7 +1297,6 @@ end,
     end
 end,
 
--- Lệnh UnAutoMissed
 ["unautomissed"] = function()
     if _G.autoMissedConnection then
         _G.autoMissedConnection:Disconnect()
@@ -1309,7 +1304,6 @@ end,
     end
 end,
 
--- Lệnh Unfreecam2
 ["unfreecam2"] = function()
     -- Ngắt kết nối script Freecam2
     local freecamScript = game.Workspace:FindFirstChild("FreecamScript") or game.Players.LocalPlayer.PlayerScripts:FindFirstChild("FreecamScript")
