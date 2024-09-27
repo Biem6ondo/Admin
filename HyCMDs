@@ -2256,22 +2256,35 @@ end,
 ["button#freeze"] = function()
 local ScreenGui = Instance.new("ScreenGui")
 local DraggableButton = Instance.new("TextButton")
+local UserInputService = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local freezeEnabled = false
+local frozenParts = {}
 
 ScreenGui.Parent = game.CoreGui
+ScreenGui.ResetOnSpawn = false
 
 DraggableButton.Parent = ScreenGui
-DraggableButton.BackgroundColor3 = Color3.new(0, 0, 0) -- Màu đen
+DraggableButton.BackgroundColor3 = Color3.new(0, 0, 0)
 DraggableButton.Size = UDim2.new(0, 100, 0, 50)
 DraggableButton.Position = UDim2.new(0.5, -50, 0.5, -25)
 DraggableButton.Text = "Freeze"
-DraggableButton.TextColor3 = Color3.new(1, 1, 1) -- Màu trắng cho chữ
+DraggableButton.TextColor3 = Color3.new(1, 1, 1)
+DraggableButton.BorderSizePixel = 0
+DraggableButton.Font = Enum.Font.SourceSans
+DraggableButton.TextSize = 24
+DraggableButton.AutoButtonColor = false
 
-local character = game.Players.LocalPlayer.Character
-local isFrozen = false
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 10)
+UICorner.Parent = DraggableButton
+
 local dragging = false
 local dragInput
 local dragStart
 local startPos
+local holdStart = 0
 
 local function update(input)
     local delta = input.Position - dragStart
@@ -2283,6 +2296,7 @@ DraggableButton.InputBegan:Connect(function(input)
         dragging = true
         dragStart = input.Position
         startPos = DraggableButton.Position
+        holdStart = tick()
 
         input.Changed:Connect(function()
             if input.UserInputState == Enum.UserInputState.End then
@@ -2298,29 +2312,42 @@ DraggableButton.InputChanged:Connect(function(input)
     end
 end)
 
-game:GetService("UserInputService").InputChanged:Connect(function(input)
+UserInputService.InputChanged:Connect(function(input)
     if dragging and input == dragInput then
         update(input)
     end
 end)
 
--- Hàm để freeze và unfreeze nhân vật
 local function toggleFreeze()
-    if isFrozen then
-        character.HumanoidRootPart.Anchored = false -- Unfreeze
+    if freezeEnabled then
+        for _, part in pairs(frozenParts) do
+            part.Anchored = false
+        end
         DraggableButton.Text = "Freeze"
+        frozenParts = {}
     else
-        character.HumanoidRootPart.Anchored = true -- Freeze
+        for _, part in pairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") and not part.Anchored then
+                part.Anchored = true
+                table.insert(frozenParts, part)
+            end
+        end
         DraggableButton.Text = "Unfreeze"
     end
-    isFrozen = not isFrozen
+    freezeEnabled = not freezeEnabled
 end
 
--- Khi bấm nút thì freeze/unfreeze
 DraggableButton.MouseButton1Click:Connect(toggleFreeze)
+
+game:GetService("RunService").RenderStepped:Connect(function()
+    if dragging and (tick() - holdStart) >= 5 then
+        DraggableButton.Visible = false
+    end
+end)
 end,
 
 ["button#lay"] = function()
+-- Wait To Update
 local ScreenGui = Instance.new("ScreenGui")
 local DraggableButton = Instance.new("TextButton")
 
@@ -2459,34 +2486,48 @@ end,
 
 ["button#time"] = function()
 local ScreenGui = Instance.new("ScreenGui")
-local DraggableButton = Instance.new("TextButton")
+local DayNightButton = Instance.new("TextButton")
+local UserInputService = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+local Lighting = game:GetService("Lighting")
+local player = Players.LocalPlayer
+local timeRunning = false -- Biến để kiểm tra xem thời gian có đang chạy hay không
 
 ScreenGui.Parent = game.CoreGui
+ScreenGui.ResetOnSpawn = false
 
-DraggableButton.Parent = ScreenGui
-DraggableButton.BackgroundColor3 = Color3.new(0, 0, 0) -- Màu đen
-DraggableButton.Size = UDim2.new(0, 100, 0, 50)
-DraggableButton.Position = UDim2.new(0.5, -50, 0.5, -25)
-DraggableButton.Text = "Day"
-DraggableButton.TextColor3 = Color3.new(1, 1, 1) -- Màu trắng cho chữ
+DayNightButton.Parent = ScreenGui
+DayNightButton.BackgroundColor3 = Color3.new(0, 0, 0)
+DayNightButton.Size = UDim2.new(0, 100, 0, 50)
+DayNightButton.Position = UDim2.new(0.5, -50, 0.5, -25)
+DayNightButton.Text = "Set Night"
+DayNightButton.TextColor3 = Color3.new(1, 1, 1)
+DayNightButton.BorderSizePixel = 0
+DayNightButton.Font = Enum.Font.SourceSans
+DayNightButton.TextSize = 24
+DayNightButton.AutoButtonColor = false
 
-local lighting = game:GetService("Lighting")
-local isDay = true
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 10)
+UICorner.Parent = DayNightButton
+
 local dragging = false
 local dragInput
 local dragStart
 local startPos
+local holdStart = 0
 
 local function update(input)
     local delta = input.Position - dragStart
-    DraggableButton.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    DayNightButton.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
 end
 
-DraggableButton.InputBegan:Connect(function(input)
+DayNightButton.InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
         dragging = true
         dragStart = input.Position
-        startPos = DraggableButton.Position
+        startPos = DayNightButton.Position
+        holdStart = tick()
 
         input.Changed:Connect(function()
             if input.UserInputState == Enum.UserInputState.End then
@@ -2496,30 +2537,42 @@ DraggableButton.InputBegan:Connect(function(input)
     end
 end)
 
-DraggableButton.InputChanged:Connect(function(input)
+DayNightButton.InputChanged:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
         dragInput = input
     end
 end)
 
-game:GetService("UserInputService").InputChanged:Connect(function(input)
+UserInputService.InputChanged:Connect(function(input)
     if dragging and input == dragInput then
         update(input)
     end
 end)
 
 local function toggleDayNight()
-    if isDay then
-        lighting.TimeOfDay = "00:00:00" -- Đặt về đêm (midnight)
-        DraggableButton.Text = "Night"
+    if timeRunning then
+        for _, part in pairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") and not part.Anchored then
+                part.Anchored = false
+            end
+        end
+        DayNightButton.Text = "Set Day"
+        Lighting.TimeOfDay = "00:00:00" -- Đặt thời gian là giữa đêm
+        timeRunning = false
     else
-        lighting.TimeOfDay = "12:00:00" -- Đặt về ngày (noon)
-        DraggableButton.Text = "Day"
+        Lighting.TimeOfDay = "14:00:00" -- Đặt thời gian là giữa ngày
+        DayNightButton.Text = "Set Night"
+        timeRunning = true
     end
-    isDay = not isDay
 end
 
-DraggableButton.MouseButton1Click:Connect(toggleDayNight)
+DayNightButton.MouseButton1Click:Connect(toggleDayNight)
+
+game:GetService("RunService").RenderStepped:Connect(function()
+    if dragging and (tick() - holdStart) >= 5 then
+        DayNightButton.Visible = false
+    end
+end)
 end,
 
 ["button#freecam"] = function()
@@ -2533,18 +2586,28 @@ local originalCamera = Camera.CFrame
 local freecamEnabled = false
 
 ScreenGui.Parent = game.CoreGui
+ScreenGui.ResetOnSpawn = false
 
 DraggableButton.Parent = ScreenGui
-DraggableButton.BackgroundColor3 = Color3.new(0, 0, 0) -- Màu đen
+DraggableButton.BackgroundColor3 = Color3.new(0, 0, 0)
 DraggableButton.Size = UDim2.new(0, 100, 0, 50)
 DraggableButton.Position = UDim2.new(0.5, -50, 0.5, -25)
 DraggableButton.Text = "Freecam"
-DraggableButton.TextColor3 = Color3.new(1, 1, 1) -- Màu trắng cho chữ
+DraggableButton.TextColor3 = Color3.new(1, 1, 1)
+DraggableButton.BorderSizePixel = 0
+DraggableButton.Font = Enum.Font.SourceSans
+DraggableButton.TextSize = 24
+DraggableButton.AutoButtonColor = false
+
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 10)
+UICorner.Parent = DraggableButton
 
 local dragging = false
 local dragInput
 local dragStart
 local startPos
+local holdStart = 0
 
 local function update(input)
     local delta = input.Position - dragStart
@@ -2556,6 +2619,7 @@ DraggableButton.InputBegan:Connect(function(input)
         dragging = true
         dragStart = input.Position
         startPos = DraggableButton.Position
+        holdStart = tick()
 
         input.Changed:Connect(function()
             if input.UserInputState == Enum.UserInputState.End then
@@ -2579,12 +2643,10 @@ end)
 
 local function toggleFreecam()
     if freecamEnabled then
-        -- Về chế độ camera gốc
         Camera.CameraType = Enum.CameraType.Custom
         Camera.CFrame = originalCamera
         DraggableButton.Text = "Freecam"
     else
-        -- Vào chế độ Freecam
         Camera.CameraType = Enum.CameraType.Scriptable
         DraggableButton.Text = "UnFreecam"
     end
@@ -2592,6 +2654,21 @@ local function toggleFreecam()
 end
 
 DraggableButton.MouseButton1Click:Connect(toggleFreecam)
+
+player.CharacterAdded:Connect(function(character)
+    if freecamEnabled then
+        Camera.CameraType = Enum.CameraType.Custom
+        Camera.CFrame = originalCamera
+        freecamEnabled = false
+        DraggableButton.Text = "Freecam"
+    end
+end)
+
+game:GetService("RunService").RenderStepped:Connect(function()
+    if dragging and (tick() - holdStart) >= 5 then
+        DraggableButton.Visible = false
+    end
+end)
 end,
 
 ["oldshoolanimation"] = function()
