@@ -1302,154 +1302,17 @@ end,
         _G.autoMissedConnection:Disconnect()
         _G.autoMissedConnection = nil
     end
-end,
+
 
 ["unfreecam2"] = function()
-    -- Ngắt kết nối script Freecam2
-    local freecamScript = game.Workspace:FindFirstChild("FreecamScript") or game.Players.LocalPlayer.PlayerScripts:FindFirstChild("FreecamScript")
-    if freecamScript then
-        freecamScript:Destroy()
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+for _, part in pairs(character:GetDescendants()) do
+    if part:IsA("BasePart") then
+        part.Anchored = false
     end
-
-    -- Đảm bảo nhân vật không còn bị đóng băng
-    local character = game.Players.LocalPlayer.Character
-    if character then
-        for _, part in ipairs(character:GetChildren()) do
-            if part:IsA("BasePart") then
-                part.Anchored = false
-            end
-        end
-    end
-
-    -- Đặt lại camera để có thể nhìn xung quanh
-    local cam = workspace.CurrentCamera
-    cam.CameraType = Enum.CameraType.Custom
-end,
-
-["freecam2"] = function()
-    local cam = workspace.CurrentCamera
-    local UIS = game:GetService("UserInputService")
-    local RS = game:GetService("RunService")
-    local onMobile = not UIS.KeyboardEnabled
-    local keysDown = {}
-    local rotating = false
-
-    if not game:IsLoaded() then game.Loaded:Wait() end
-
-    cam.CameraType = Enum.CameraType.Scriptable
-
-    local speed = 5
-    local sens = .3
-    speed /= 10
-    if onMobile then sens *= 2 end
-
-    -- Đóng băng nhân vật
-    local character = game.Players.LocalPlayer.Character
-    if character then
-        for _, part in ipairs(character:GetChildren()) do
-            if part:IsA("BasePart") then
-                part.Anchored = true
-            end
-        end
-    end
-
-    local function renderStepped()
-        if rotating then
-            local delta = UIS:GetMouseDelta()
-            local cf = cam.CFrame
-            local yAngle = cf:ToEulerAnglesXYZ()
-            local newAmount = math.deg(yAngle) + delta.Y
-            if newAmount > 65 or newAmount < -65 then
-                if not (yAngle < 0 and delta.Y < 0) and not (yAngle > 0 and delta.Y > 0) then
-                    delta = Vector2.new(delta.X, 0)
-                end
-            end
-            cf *= CFrame.Angles(-math.rad(delta.Y), 0, 0)
-            cf = CFrame.Angles(0, -math.rad(delta.X), 0) * (cf - cf.Position) + cf.Position
-            cf = CFrame.lookAt(cf.Position, cf.Position + cf.LookVector)
-            if delta ~= Vector2.new(0, 0) then cam.CFrame = cam.CFrame:Lerp(cf, sens) end
-            UIS.MouseBehavior = Enum.MouseBehavior.LockCurrentPosition
-        else
-            UIS.MouseBehavior = Enum.MouseBehavior.Default
-        end
-
-        if keysDown["Enum.KeyCode.W"] then
-            cam.CFrame *= CFrame.new(Vector3.new(0, 0, -speed))
-        end
-        if keysDown["Enum.KeyCode.A"] then
-            cam.CFrame *= CFrame.new(Vector3.new(-speed, 0, 0))
-        end
-        if keysDown["Enum.KeyCode.S"] then
-            cam.CFrame *= CFrame.new(Vector3.new(0, 0, speed))
-        end
-        if keysDown["Enum.KeyCode.D"] then
-            cam.CFrame *= CFrame.new(Vector3.new(speed, 0, 0))
-        end
-    end
-
-    RS.RenderStepped:Connect(renderStepped)
-
-    local validKeys = {"Enum.KeyCode.W", "Enum.KeyCode.A", "Enum.KeyCode.S", "Enum.KeyCode.D"}
-
-    UIS.InputBegan:Connect(function(Input)
-        for _, key in pairs(validKeys) do
-            if key == tostring(Input.KeyCode) then
-                keysDown[key] = true
-            end
-        end
-        if Input.UserInputType == Enum.UserInputType.MouseButton2 or (Input.UserInputType == Enum.UserInputType.Touch and UIS:GetMouseLocation().X > (cam.ViewportSize.X / 2)) then
-            rotating = true
-        end
-        if Input.UserInputType == Enum.UserInputType.Touch then
-            if Input.Position.X < cam.ViewportSize.X / 2 then
-                touchPos = Input.Position
-            end
-        end
-    end)
-
-    UIS.InputEnded:Connect(function(Input)
-        for key, v in pairs(keysDown) do
-            if key == tostring(Input.KeyCode) then
-                keysDown[key] = false
-            end
-        end
-        if Input.UserInputType == Enum.UserInputType.MouseButton2 or (Input.UserInputType == Enum.UserInputType.Touch and UIS:GetMouseLocation().X > (cam.ViewportSize.X / 2)) then
-            rotating = false
-        end
-        if Input.UserInputType == Enum.UserInputType.Touch and touchPos then
-            if Input.Position.X < cam.ViewportSize.X / 2 then
-                touchPos = nil
-                keysDown["Enum.KeyCode.W"] = false
-                keysDown["Enum.KeyCode.A"] = false
-                keysDown["Enum.KeyCode.S"] = false
-                keysDown["Enum.KeyCode.D"] = false
-            end
-        end
-    end)
-
-    UIS.TouchMoved:Connect(function(input)
-        if touchPos then
-            if input.Position.X < cam.ViewportSize.X / 2 then
-                if input.Position.Y < touchPos.Y then
-                    keysDown["Enum.KeyCode.W"] = true
-                    keysDown["Enum.KeyCode.S"] = false
-                else
-                    keysDown["Enum.KeyCode.W"] = false
-                    keysDown["Enum.KeyCode.S"] = true
-                end
-                if input.Position.X < (touchPos.X - 15) then
-                    keysDown["Enum.KeyCode.A"] = true
-                    keysDown["Enum.KeyCode.D"] = false
-                elseif input.Position.X > (touchPos.X + 15) then
-                    keysDown["Enum.KeyCode.A"] = false
-                    keysDown["Enum.KeyCode.D"] = true
-                else
-                    keysDown["Enum.KeyCode.A"] = false
-                    keysDown["Enum.KeyCode.D"] = false
-                end
-            end
-        end
-    end)
+end
 
 local player = game.Players.LocalPlayer
 local camera = game.Workspace.CurrentCamera
@@ -1468,6 +1331,132 @@ end
 
 deleteCamera()
 restoreCamera()
+end,
+
+["freecam2"] = function()
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+for _, part in pairs(character:GetDescendants()) do
+    if part:IsA("BasePart") then
+        part.Anchored = true
+    end
+end
+
+local cam = workspace.CurrentCamera
+local UIS = game:GetService("UserInputService")
+local RS = game:GetService("RunService")
+local onMobile = not UIS.KeyboardEnabled
+local keysDown = {}
+local rotating = false
+
+if not game:IsLoaded() then game.Loaded:Wait() end
+
+cam.CameraType = Enum.CameraType.Scriptable
+
+local speed = 5
+local sens = .3
+
+speed /= 10
+if onMobile then sens*=2 end
+
+local function renderStepped()
+    if rotating then
+        local delta = UIS:GetMouseDelta()
+        local cf = cam.CFrame
+        local yAngle = cf:ToEulerAngles(Enum.RotationOrder.YZX)
+        local newAmount = math.deg(yAngle)+delta.Y
+        if newAmount > 65 or newAmount < -65 then
+            if not (yAngle<0 and delta.Y<0) and not (yAngle>0 and delta.Y>0) then
+                delta = Vector2.new(delta.X,0)
+            end 
+        end
+        cf *= CFrame.Angles(-math.rad(delta.Y),0,0)
+        cf = CFrame.Angles(0,-math.rad(delta.X),0) * (cf - cf.Position) + cf.Position
+        cf = CFrame.lookAt(cf.Position, cf.Position + cf.LookVector)
+        if delta ~= Vector2.new(0,0) then cam.CFrame = cam.CFrame:Lerp(cf,sens) end
+        UIS.MouseBehavior = Enum.MouseBehavior.LockCurrentPosition
+    else
+        UIS.MouseBehavior = Enum.MouseBehavior.Default
+    end
+
+    if keysDown["Enum.KeyCode.W"] then
+        cam.CFrame *= CFrame.new(Vector3.new(0,0,-speed))
+    end
+    if keysDown["Enum.KeyCode.A"] then
+        cam.CFrame *= CFrame.new(Vector3.new(-speed,0,0))
+    end
+    if keysDown["Enum.KeyCode.S"] then
+        cam.CFrame *= CFrame.new(Vector3.new(0,0,speed))
+    end
+    if keysDown["Enum.KeyCode.D"] then
+        cam.CFrame *= CFrame.new(Vector3.new(speed,0,0))
+    end
+end
+
+RS.RenderStepped:Connect(renderStepped)
+
+local validKeys = {"Enum.KeyCode.W","Enum.KeyCode.A","Enum.KeyCode.S","Enum.KeyCode.D"}
+
+UIS.InputBegan:Connect(function(Input)
+    for i, key in pairs(validKeys) do
+        if key == tostring(Input.KeyCode) then
+            keysDown[key] = true
+        end
+    end
+    if Input.UserInputType == Enum.UserInputType.MouseButton2 or (Input.UserInputType == Enum.UserInputType.Touch and UIS:GetMouseLocation().X>(cam.ViewportSize.X/2)) then
+        rotating = true
+    end
+    if Input.UserInputType == Enum.UserInputType.Touch then
+        if Input.Position.X < cam.ViewportSize.X/2 then
+            touchPos = Input.Position
+        end
+    end
+end)
+
+UIS.InputEnded:Connect(function(Input)
+    for key, v in pairs(keysDown) do
+        if key == tostring(Input.KeyCode) then
+            keysDown[key] = false
+        end
+    end
+    if Input.UserInputType == Enum.UserInputType.MouseButton2 or (Input.UserInputType == Enum.UserInputType.Touch and UIS:GetMouseLocation().X>(cam.ViewportSize.X/2)) then
+        rotating = false
+    end
+    if Input.UserInputType == Enum.UserInputType.Touch and touchPos then
+        if Input.Position.X < cam.ViewportSize.X/2 then
+            touchPos = nil
+            keysDown["Enum.KeyCode.W"] = false
+            keysDown["Enum.KeyCode.A"] = false
+            keysDown["Enum.KeyCode.S"] = false
+            keysDown["Enum.KeyCode.D"] = false
+        end
+    end
+end)
+
+UIS.TouchMoved:Connect(function(input)
+    if touchPos then
+        if input.Position.X < cam.ViewportSize.X/2 then
+            if input.Position.Y < touchPos.Y then
+                keysDown["Enum.KeyCode.W"] = true
+                keysDown["Enum.KeyCode.S"] = false
+            else
+                keysDown["Enum.KeyCode.W"] = false
+                keysDown["Enum.KeyCode.S"] = true
+            end
+            if input.Position.X < (touchPos.X-15) then
+                keysDown["Enum.KeyCode.A"] = true
+                keysDown["Enum.KeyCode.D"] = false
+            elseif input.Position.X > (touchPos.X+15) then
+                keysDown["Enum.KeyCode.A"] = false
+                keysDown["Enum.KeyCode.D"] = true
+            else
+                keysDown["Enum.KeyCode.A"] = false
+                keysDown["Enum.KeyCode.D"] = false
+            end
+        end
+    end
+end)
 end,
 
 ["fixcam"] = function()
@@ -1789,50 +1778,7 @@ end,
             walkInDirection(direction:lower(), studs)
         end
     end
-
-    -- In thông báo sau khi hoàn thành
     print("Done!")
-end,
-
-["owner"] = function()
-    local player = game.Players.LocalPlayer
-    local character = player.Character or player.CharacterAdded:Wait()
-    local humanoid = character:WaitForChild("Humanoid")
-    local hrp = character:WaitForChild("HumanoidRootPart")
-
-    -- Bán kính mà hitbox sẽ mở rộng
-    local radius = 500
-
-    -- Tạo một Collider giả quanh nhân vật để mở rộng hitbox
-    local function createHitbox()
-        local hitbox = Instance.new("Part")
-        hitbox.Name = "Hitbox"
-        hitbox.Size = Vector3.new(radius * 2, radius * 2, radius * 2) -- Tạo hitbox lớn hơn
-        hitbox.Position = hrp.Position
-        hitbox.Anchored = true
-        hitbox.CanCollide = false -- Đảm bảo không gây va chạm với các vật thể khác
-        hitbox.Transparency = 1 -- Làm cho hitbox vô hình
-        hitbox.Parent = workspace
-        return hitbox
-    end
-
-    -- Xóa hitbox nếu đã tồn tại
-    local existingHitbox = workspace:FindFirstChild("Hitbox")
-    if existingHitbox then
-        existingHitbox:Destroy()
-    end
-
-    -- Tạo hitbox mới
-    local hitbox = createHitbox()
-
-    -- In thông báo
-    print("Hitbox expanded to cover a radius of " .. radius .. " studs!")
-end,
-
-["help"] = function()
-    -- Lưu cụm từ "Please wait!" vào bộ nhớ tạm
-    setclipboard("Please wait!")
-    print("Help text copied to clipboard: Please wait!")
 end,
 
 ["copyname"] = function(targetName)
@@ -1892,44 +1838,6 @@ end,
     
     -- In thông báo thành công
     print("Text size changed to " .. newSize)
-end,
-
-["dienormal"] = function()
-local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-
--- Hàm để neo toàn bộ nhân vật và phụ kiện khi chết
-local function onCharacterDied()
-    -- Neo tất cả các phần của nhân vật
-    for _, part in ipairs(character:GetChildren()) do
-        if part:IsA("BasePart") then
-            part.Anchored = true
-        end
-    end
-
-    -- Neo tất cả các phụ kiện (mũ, quần áo, vv.)
-    for _, accessory in ipairs(character:GetChildren()) do
-        if accessory:IsA("Accessory") then
-            accessory.Handle.Anchored = true
-        end
-    end
-
-    -- Thêm trọng lực để tạo hiệu ứng đung đưa
-    for _, part in ipairs(character:GetChildren()) do
-        if part:IsA("BasePart") then
-            part.Velocity = Vector3.new(0, -50, 0) -- Tạo trọng lực xuống để có cảm giác đung đưa
-        end
-    end
-end
-
--- Kết nối hàm với sự kiện nhân vật chết
-character:WaitForChild("Humanoid").Died:Connect(onCharacterDied)
-
--- Đảm bảo script tiếp tục áp dụng nếu nhân vật tái sinh
-player.CharacterAdded:Connect(function(newCharacter)
-    character = newCharacter
-    character:WaitForChild("Humanoid").Died:Connect(onCharacterDied)
-end)
 end,
 
 ["command"] = function()
@@ -2101,18 +2009,13 @@ end,
     searchBox:GetPropertyChangedSignal("Text"):Connect(function()
         updateCommandList(searchBox.Text)
     end)
-
-    -- Initial population of command buttons
     updateCommandList("")
-
-    -- Close button functionality
     closeButton.MouseButton1Click:Connect(function()
         screenGui:Destroy()
     end)
 end,
 
 ["paper"] = function()
--- Tạo một hàm để làm nhân vật bị sẹp lép
 local function makeFlattened()
     local character = game.Players.LocalPlayer.Character
     if not character then return end
@@ -2123,13 +2026,10 @@ local function makeFlattened()
         end
     end
 end
-
--- Gọi hàm để làm nhân vật bị sẹp lép
 makeFlattened()
 end,
 
 ["fat"] = function()
--- Tạo một hàm để làm nhân vật mập ra
 local function makeFat()
     local character = game.Players.LocalPlayer.Character
     if not character then return end
@@ -2497,7 +2397,6 @@ game:GetService("UserInputService").InputChanged:Connect(function(input)
     end
 end)
 
--- Hàm để giữ trạng thái lay
 local function toggleLay()
     if isLaying then
         humanoid.PlatformStand = false -- Cho phép nhân vật đứng dậy
@@ -2511,7 +2410,6 @@ local function toggleLay()
     isLaying = not isLaying
 end
 
--- Khi bấm nút thì lay/unlay
 DraggableButton.MouseButton1Click:Connect(toggleLay)
 end,
 
@@ -2578,7 +2476,6 @@ local function toggleSit()
     isSitting = not isSitting
 end
 
--- Khi bấm nút thì sit/unsit
 DraggableButton.MouseButton1Click:Connect(toggleSit)
 end,
 
@@ -2589,7 +2486,7 @@ local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
 local Lighting = game:GetService("Lighting")
 local player = Players.LocalPlayer
-local timeRunning = false -- Biến để kiểm tra xem thời gian có đang chạy hay không
+local timeRunning = false
 
 ScreenGui.Parent = game.CoreGui
 ScreenGui.ResetOnSpawn = false
